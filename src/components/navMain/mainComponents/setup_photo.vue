@@ -39,7 +39,8 @@ export default {
       photo_list: [],
       build_id: null,
       category: null,
-      category_img: []
+      category_img: [],
+      newArr: []
     };
   },
   mounted() {
@@ -56,13 +57,25 @@ export default {
     getPhotoList() {
       this.$http.getphototypeList("BUILD_IMG_CATEGORY").then(res => {
         if (res.status === 200) {
-          this.photo_list = res.data.data;
+          res.data.data.filter(item => {
+            this.photo_list.push({
+              category: item.value,
+              description: item.description
+            });
+          });
         }
       });
     },
     showImg() {
       this.$http.getImgList(this.build_id).then(res => {
-        this.category_img = res.data;
+        res.data.filter(item => {
+          this.photo_list.map(it => {
+            console.log(it);
+            if (it.category == item.category) {
+              this.newArr.push(it);
+            }
+          });
+        });
       });
     },
     goPlanPhoto(id, value) {
