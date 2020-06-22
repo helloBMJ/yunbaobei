@@ -4,6 +4,7 @@
       <div class="title">操作提示</div>
       <div class="title-ctn">
         <p>所属户型为扩展内容，仅在类型为"样板间"时设置有效，可不填</p>
+        <p>点击进入相应图片列表进入上传图片</p>
       </div>
       <div class="btn-box">
         <el-button size="mini" @click="goBack">新盘列表</el-button>
@@ -17,9 +18,9 @@
             class="grid-content bg-purple"
             @click="goPlanPhoto(build_id, item.value)"
           >
-            <div class="img-box" v-for="item in category_img" :key="item.id">
+            <!-- <div class="img-box" v-for="item in category_img" :key="item.id">
               <img :src="item.img" alt="" />
-            </div>
+            </div> -->
             <div class="mask">
               <div class="mask-box div row">
                 <p class="top">{{ item.description }}</p>
@@ -46,7 +47,6 @@ export default {
   mounted() {
     this.build_id = this.$route.query.id;
     this.getPhotoList();
-    this.showImg();
   },
   methods: {
     // 返回列表页
@@ -57,27 +57,11 @@ export default {
     getPhotoList() {
       this.$http.getphototypeList("BUILD_IMG_CATEGORY").then(res => {
         if (res.status === 200) {
-          res.data.data.filter(item => {
-            this.photo_list.push({
-              category: item.value,
-              description: item.description
-            });
-          });
+          this.photo_list = res.data.data;
         }
       });
     },
-    showImg() {
-      this.$http.getImgList(this.build_id).then(res => {
-        res.data.filter(item => {
-          this.photo_list.map(it => {
-            console.log(it);
-            if (it.category == item.category) {
-              this.newArr.push(it);
-            }
-          });
-        });
-      });
-    },
+
     goPlanPhoto(id, value) {
       this.$router.push(`/plan_photo?id=${id}&category=${value}`);
     }
@@ -106,7 +90,7 @@ export default {
   }
 }
 .el-main {
-  margin-top: 80px;
+  margin-top: 100px;
   .title {
     margin: 10px 0;
     padding-left: 5px;

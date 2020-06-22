@@ -127,6 +127,22 @@ module.exports = [
         title: "发布楼盘"
       }
     ]
+  },
+  {
+    name: "公司",
+    id: "5",
+    sub: [
+      {
+        name: "company_list",
+        componentName: "company_list",
+        title: "公司列表"
+      }
+      // {
+      //   name: "updata_company",
+      //   componentName: "updata_company",
+      //   title: "修改公司信息"
+      // }
+    ]
   }
   // {
   //   name: "",

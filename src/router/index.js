@@ -249,6 +249,29 @@ export default new Router({
         require(["@/components/navMain/setup/operation_log"], resolve),
       meta: { title: "操作日志" },
       name: "操作日志"
+    },
+    // 公司
+
+    {
+      path: "/company_list",
+      component: resolve =>
+        require(["@/components/navMain/company/company_list"], resolve),
+      meta: { title: "公司列表" },
+      name: "公司列表"
+    },
+    {
+      path: "/updata_company",
+      component: resolve =>
+        require(["@/components/navMain/company/updata_company"], resolve),
+      meta: { title: "修改公司信息" },
+      name: "修改公司信息"
+    },
+    {
+      path: "/upload_company",
+      component: resolve =>
+        require(["@/components/navMain/company/upload_company"], resolve),
+      meta: { title: "添加公司" },
+      name: "添加公司"
     }
   ]
 });

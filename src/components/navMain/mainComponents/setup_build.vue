@@ -26,36 +26,21 @@
           <el-button type="primary">检查重名</el-button>
         </el-form-item>
         <!-- 项目拼音 -->
-        <el-form-item label="项目拼音" prop="project_pinyin">
+        <!-- <el-form-item label="项目拼音" prop="project_pinyin">
           <el-input
             v-model="formInline.project_pinyin"
             placeholder="系统默认添加项目名称首字母组合 "
           ></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <!-- 城市区域 -->
         <div>
           <el-form-item label="城市区域" prop="area">
-            城市
-            <el-select v-model="formInline.area" placeholder="区域">
-              <el-option
-                v-for="item in arealist"
-                :key="item.id"
-                :label="item.name"
-                :value="item.name"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="plate">
-            <el-select v-model="formInline.plate" placeholder="板块">
-              <el-option
-                v-for="item in platelist"
-                :key="item.id"
-                :label="item.name"
-                :value="item.name"
-              >
-              </el-option>
-            </el-select>
+            <v-distpicker
+              province=""
+              city=""
+              area=""
+              @selected="onSelected"
+            ></v-distpicker>
           </el-form-item>
         </div>
 
@@ -99,15 +84,12 @@
         <!-- 楼盘属性 -->
         <div class="lou-type">
           <div class="lou-type-s">楼盘属性</div>
-          <el-select
-            v-model="formInline.attributes"
-            :placeholder="formInline.attributes"
-          >
+          <el-select v-model="formInline.attributes" placeholder="">
             <el-option
               v-for="item in attributes"
               :key="item.id"
               :label="item.name"
-              :value="item.name"
+              :value="item.id"
             >
             </el-option>
           </el-select>
@@ -169,8 +151,7 @@
           <el-input
             v-model="formInline.property_company"
             placeholder=""
-          ></el-input
-          >元（/㎡/月）
+          ></el-input>
         </el-form-item>
         <!-- 面积区间 -->
         <el-form-item label="面积区间" prop="area_interval">
@@ -188,7 +169,7 @@
           <el-input v-model="formInline.developer" placeholder=""></el-input>
         </el-form-item>
         <!-- 销售许可证 -->
-        <el-form-item label="物业公司" prop="license">
+        <el-form-item label="销售许可证" prop="license">
           <el-input v-model="formInline.license" placeholder=""></el-input>
         </el-form-item>
         <!-- 装修 -->
@@ -233,8 +214,9 @@
         <!-- 建筑数据 -->
         <div class="title">建筑数据</div>
         <!-- 总建筑面积 -->
-        <el-form-item label="物业公司">
-          <el-input v-model="formInline.total_area" placeholder=""></el-input>
+        <el-form-item label="总建筑面积">
+          <el-input v-model="formInline.total_area" placeholder=""></el-input
+          >平米<i style="color:rgb(153, 153, 153)">例：100平米</i>
         </el-form-item>
         <!-- 占地面积 -->
         <el-form-item label="占地面积">
@@ -275,6 +257,7 @@
           <p style="color:rgb(153, 153, 153)">
             主要以开盘时间说明为准，这里用于开盘日历及列表排序
           </p>
+          <p style="color:rgb(153, 153, 153)">注：时间格式：xxxx-xx-xx</p>
         </el-form-item>
         <!-- 竣工时间 -->
         <el-form-item label="竣工时间">
@@ -393,12 +376,18 @@
 </template>
 
 <script>
+import VDistpicker from "v-distpicker";
+
 export default {
   data() {
     return {
       // 提交内容表单
       formInline: {
         // 楼盘信息
+
+        province_id: "",
+        city_id: "",
+        district_id: "",
         project_name: "",
         project_pinyin: "",
         area: "",
@@ -407,7 +396,7 @@ export default {
         map_lat: "",
         map_lng: "",
         lou_radio: [],
-        attributes: "",
+        attributes: [],
         lou_tel: "",
         sales_address: "",
         lou_price: "",
@@ -448,31 +437,31 @@ export default {
       },
       // 楼盘类型数组
       lou_list: [
-        { id: 1, type: "高层" },
-        { id: 2, type: "写字楼" },
-        { id: 3, type: "洋房" },
-        { id: 4, type: "别墅" },
-        { id: 5, type: "商业" }
+        { id: "1", type: "高层" },
+        { id: "2", type: "写字楼" },
+        { id: "3", type: "洋房" },
+        { id: "4", type: "别墅" },
+        { id: "5", type: "商业" }
       ],
       // 装修类型数组
       decorationlist: [
-        { id: 1, type: "毛坯" },
-        { id: 2, type: "简装" },
-        { id: 3, type: "精修" },
-        { id: 4, type: "豪华装修" }
+        { id: "1", type: "毛坯" },
+        { id: "2", type: "简装" },
+        { id: "3", type: "精修" },
+        { id: "4", type: "豪华装修" }
       ],
       // 楼层类型数组
       floorlist: [
-        { id: 1, type: "低层" },
-        { id: 2, type: "多层" },
-        { id: 3, type: "小高层" },
-        { id: 4, type: "高层" },
-        { id: 5, type: "超高层" }
+        { id: "1", type: "低层" },
+        { id: "2", type: "多层" },
+        { id: "3", type: "小高层" },
+        { id: "4", type: "高层" },
+        { id: "5", type: "超高层" }
       ],
       // 楼盘特色类型数组
       lou_feature_lsit: [
-        { id: 1, type: "别墅洋房" },
-        { id: 2, type: "经济住宅" }
+        { id: "1", type: "别墅洋房" },
+        { id: "2", type: "经济住宅" }
       ],
       // 区域选择列表数组
       arealist: [{ name: "枣庄", id: 1 }],
@@ -480,10 +469,10 @@ export default {
       platelist: [{ name: "滕州", id: 1 }],
       // 楼盘属性列表数组
       attributes: [
-        { name: "到期房卡", id: 1 },
-        { name: "期房顺销", id: 2 },
-        { name: "现房销售", id: 3 },
-        { name: "即将清盘", id: 4 }
+        { name: "到期房卡", id: "1" },
+        { name: "期房顺销", id: "2" },
+        { name: "现房销售", id: "3" },
+        { name: "即将清盘", id: "4" }
       ],
       // 输入框规则
       rules: {
@@ -503,12 +492,17 @@ export default {
       // 上传的内容
       dialogImageUrl: "",
       dialogVisible: false,
-      lou_id: null
+      lou_id: null,
+      city_list: []
     };
+  },
+  components: {
+    VDistpicker
   },
   mounted() {
     this.lou_id = this.$route.query.id;
     this.getQueryList();
+    this.getCity();
   },
   computed: {
     // 获取请求头
@@ -534,6 +528,31 @@ export default {
         }
       });
     },
+    // 获取城市
+    getCity() {
+      this.$http.getCity().then(res => {
+        this.city_list = res.data;
+      });
+    },
+    // 城市选择
+    onSelected(data) {
+      console.log(data);
+      this.formInline.province_id = data.province.code;
+      this.formInline.city_id = data.city.code;
+      this.formInline.district_id = data.area.code;
+      var city_obj = this.city_list.find(item => {
+        return item.code === this.formInline.city_id;
+      });
+      var province_obj = this.city_list.find(item => {
+        return item.code === this.formInline.province_id;
+      });
+      var district_obj = this.city_list.find(item => {
+        return item.code === this.formInline.district_id;
+      });
+      this.formInline.province_id = province_obj.id;
+      this.formInline.city_id = city_obj.id;
+      this.formInline.district_id = district_obj.id;
+    },
     // 上传文件
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -549,11 +568,10 @@ export default {
     // :http-request="uploadFile"
     // 提交
     onSubmit() {
+      console.log(this.formInline.district_id);
+
       if (
         !this.formInline.project_name ||
-        !this.formInline.project_pinyin ||
-        !this.formInline.area ||
-        !this.formInline.plate ||
         !this.formInline.map_lat ||
         !this.formInline.map_lng ||
         !this.formInline.lou_tel
@@ -565,29 +583,47 @@ export default {
       } else {
         this.$http
           .updateBuild({
-            id: this.lou_id,
-            tenant_id: "1",
-            website_id: "2",
-            province_id: "3",
-            city_id: "3",
-            district_id: "1",
-            full_build_address: "完整楼盘地址，含省市区名称",
-            full_sales_office_address: "完整售楼处地址，含省市区名称",
-            build_status: 2,
-            sales_office_phone_ext_num: "售楼处分机电话",
-            name: this.formInline.project_name,
-            build_address: this.formInline.build_address,
-            sales_office_address: this.formInline.sales_address,
-            build_location_long: this.formInline.map_lng,
-            build_location_lat: this.formInline.map_lat,
-            build_category: 2,
-            sales_office_phone: this.formInline.lou_tel,
-            build_avg_price: this.formInline.lou_price,
-            price_description: this.formInline.price_info,
-            newset_opening_time: this.formInline.open_time,
-            completion_house_time: "2010-01-05",
-            build_selling_points: this.formInline.selling_point,
-            img: this.formInline.img
+            build: {
+              id: this.lou_id,
+              province_id: this.formInline.province_id,
+              city_id: this.formInline.city_id,
+              district_id: this.formInline.district_id,
+              full_build_address: this.formInline.build_address,
+              full_sales_office_address: this.formInline.sales_address,
+              build_status: this.formInline.attributes,
+              sales_office_phone_ext_num: this.formInline.lou_tel,
+              name: this.formInline.project_name,
+              build_address: this.formInline.build_address,
+              sales_office_address: this.formInline.sales_address,
+              build_location_long: this.formInline.map_lng,
+              build_location_lat: this.formInline.map_lat,
+              build_category: this.formInline.lou_radio,
+              sales_office_phone: this.formInline.lou_tel,
+              build_avg_price: this.formInline.lou_price,
+              price_description: this.formInline.price_info,
+              newset_opening_time: this.formInline.open_time,
+              completion_house_time: this.formInline.complete_time,
+              build_selling_points: this.formInline.selling_point,
+              img: this.formInline.img
+            },
+            build_attr: {
+              real_estate_price: this.formInline.property_costs,
+              real_estate_company: this.formInline.property_company,
+              area_space: this.formInline.area_interval,
+              buy_coupon: this.formInline.buy_discount,
+              developers_company_name: this.formInline.developer,
+              sales_license: this.formInline.license,
+              decoration_category: this.formInline.decoration,
+              floor_category: this.formInline.floor,
+              build_feature: this.formInline.lou_feature,
+              total_build_area: this.formInline.total_area,
+              land_occupancy_area: this.formInline.footprint,
+              total_land_occupancy: this.formInline.total_houses,
+              greening_rate: this.formInline.greening_rate,
+              plot_ratio: this.formInline.volume_rate,
+              total_parking_space: this.formInline.car_space,
+              property_right_years: this.formInline.houses_property
+            }
           })
           .then(res => {
             console.log(res.status);

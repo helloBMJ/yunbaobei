@@ -221,20 +221,24 @@ class UserCenter {
     return this.$http.get("api/auth/admin/login/captcha");
   }
   // 获取楼盘列表数据
-  getHousesList() {
-    return this.$http.get(`api/admin/build/search`);
+  getHousesList(page) {
+    return this.$http.get(`api/admin/build/search?page=${page}`);
   }
   // 楼盘列表搜索
   searchList(input) {
     return this.$http.get(`api/admin/build/search?name=${input}`);
   }
+  // 搜索公司列表数据
+  searchCompany(input) {
+    return this.$http.get(`api/admin/company/search?name=${input}`);
+  }
   // 上传楼盘数据
   createBuild(data = {}) {
-    return this.$http.post("api/admin/build/create", data);
+    return this.$http.post("api/admin/build/simple/create", data);
   }
   // 修改楼盘信息
   updateBuild(data = {}) {
-    return this.$http.post(`api/admin/build/update`, data);
+    return this.$http.post(`api/admin/build/simple/update`, data);
   }
   // 删除楼盘列表数据
   deleteBuild(id) {
@@ -279,6 +283,26 @@ class UserCenter {
   // 规划图相册管理上传图片
   createBuildImg(data = {}) {
     return this.$http.post("api/admin/build/img/create", data);
+  }
+  // 公司列表获取
+  getCompanyList(page) {
+    return this.$http.get(`api/admin/company/search?page=${page}`);
+  }
+  // 添加公司
+  createCompany(data = {}) {
+    return this.$http.post(`api/admin/company/create`, data);
+  }
+  // 删除公司
+  deleteCompany(id) {
+    return this.$http.get(`api/admin/company/delete/${id}`);
+  }
+  // 修改公司信息
+  updataCompany(data = {}) {
+    return this.$http.post(`api/admin/company/update`, data);
+  }
+  // 公司展示列表
+  queryCompany(id) {
+    return this.$http.get(`api/admin/company/query/${id}`);
   }
   // 获取城市列表
   getCity() {

@@ -19,7 +19,9 @@
       <div class="title">规划图相册管理</div>
       <el-form res="form" :model="form">
         <div class="lou-type">
-          <div class="lou-type-s">楼盘缩略图</div>
+          <div class="lou-type-s">
+            楼盘缩略图（位置、配套、实景、样板、规划、效果）
+          </div>
 
           <div style="width:100%" class="row div">
             <div class="img-box" v-for="img in category_img" :key="img.id">
@@ -75,6 +77,8 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$route);
+
     this.build_id = this.$route.query.id;
     this.category_value = this.$route.query.category;
     this.showImg();
