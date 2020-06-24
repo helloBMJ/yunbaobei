@@ -29,7 +29,8 @@
         prop="operating"
         label="操作"
         show-overflow-tooltip
-        width="500"
+        width="200"
+        fixed="right"
       >
         <template slot-scope="scope">
           <el-button size="mini" @click="changeData(scope.row)">修改</el-button>

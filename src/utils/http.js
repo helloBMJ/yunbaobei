@@ -256,6 +256,10 @@ class UserCenter {
   getQueryBuildList(id) {
     return this.$http.get(`api/admin/build/query/${id}`);
   }
+  // 获取物业展示信息
+  getQueryAttrList(id) {
+    return this.$http.get(`api/admin/build/attr/query/${id}`);
+  }
   // 删除户型列表数据
   deleteHouse(id) {
     return this.$http.get(`api/admin/build/house_type/delete/${id}`);
@@ -303,6 +307,74 @@ class UserCenter {
   // 公司展示列表
   queryCompany(id) {
     return this.$http.get(`api/admin/company/query/${id}`);
+  }
+  // 获取项目列表
+  getProjectList(page) {
+    return this.$http.get(`api/admin/project/search?page=${page}`);
+  }
+  // 搜索项目信息
+  searchProject(input) {
+    return this.$http.get(`api/admin/project/search?name=${input}`);
+  }
+  // 删除项目信息
+  deleteProject(id) {
+    return this.$http.get(`api/admin/project/delete/${id}`);
+  }
+  // 添加项目信息
+  createProject(data) {
+    return this.$http.post("api/admin/project/create", data);
+  }
+  // 查询项目信息
+  queryProject(id) {
+    return this.$http.get(`api/admin/project/query/${id}`);
+  }
+  // 更新项目列表
+  updataProject(data) {
+    return this.$http.post("api/admin/project/update", data);
+  }
+  // 项目公司绑定
+  porjectCompany(data) {
+    return this.$http.post("api/admin/project/company/create", data);
+  }
+  // 项目经纪人绑定
+  projectBroker(data) {
+    return this.$http.post("api/admin/project/broker/create", data);
+  }
+  // 项目经理绑定
+  projectManager(data) {
+    return this.$http.post("api/admin/project/manager/create", data);
+  }
+  // 查询用户列表
+  searchUserList() {
+    return this.$http.get("api/admin/user/search");
+  }
+  // 查询用户信息
+  searchUser(user_name) {
+    return this.$http.get(`api/admin/admin_user/search?user_name=${user_name}`);
+  }
+  // 获取用户列表
+  getUserList(page) {
+    return this.$http.get(`api/admin/admin_user/search?page=${page}`);
+  }
+  // 删除用户列表
+  deleteUser(id) {
+    return this.$http.get(`api/admin/admin_user/delete/${id}`);
+  }
+  // 添加用户
+  createUser(data) {
+    return this.$http.post("api/admin/admin_user/create", data);
+  }
+  // 更新用户
+  updataUser(data) {
+    return this.$http.post("api/admin/admin_user/update", data);
+  }
+  // 修改密码
+  modifyPassword(data) {
+    return this.$http.post("api/admin/admin_user/password/update", data);
+  }
+  // 字典查找类型
+  dictionaryFind(type) {
+    return this.$http.get(`api/common/dictionary/search?name=${type}`);
   }
   // 获取城市列表
   getCity() {

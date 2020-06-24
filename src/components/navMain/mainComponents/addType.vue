@@ -38,7 +38,7 @@
           <el-input type="number" v-model="form.area"></el-input>
         </el-form-item>
       </div>
-      <div class="auto-width">
+      <!-- <div class="auto-width">
         <el-form-item label="标识">
           <el-select v-model="form.mark_sale" placeholder="">
             <el-option
@@ -49,7 +49,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-      </div>
+      </div> -->
       <div class="auto-width">
         <el-form-item label="户型特色">
           <el-input v-model="form.features"></el-input>
@@ -165,7 +165,7 @@ export default {
       this.$http
         .createHouse({
           build_id: this.build_id,
-          category: 4,
+          category: this.form.region,
           name: this.form.type_logo,
           total_room: this.form.room,
           total_salloon: this.form.hall,
@@ -181,7 +181,7 @@ export default {
               message: "提交成功",
               type: "success"
             });
-            this.$router.push("/setup_type");
+            location.reload();
           } else {
             this.$message({
               message: "提交失败",
@@ -223,5 +223,8 @@ export default {
     color: #606266;
     font-size: 14rpx;
   }
+}
+.el-input {
+  width: 200px;
 }
 </style>

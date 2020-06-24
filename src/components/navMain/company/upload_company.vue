@@ -3,13 +3,20 @@
     <el-header
       ><div class="title">提示</div>
       <div class="title-ctn">
-        <p></p>
+        <p>请正确填写输入框信息</p>
       </div>
     </el-header>
     <el-main>
       <el-form label-width="100px" :model="form" style="width:500px">
         <el-form-item label="公司分类">
-          <el-input v-model="form.category"></el-input>
+          <el-select v-model="form.category" placeholder="请选择公司类型">
+            <el-option
+              v-for="item in category_list"
+              :key="item.id"
+              :label="item.description"
+              :value="item.id"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="公司名称">
           <el-input v-model="form.name"></el-input>
@@ -111,7 +118,7 @@ export default {
   data() {
     return {
       form: {
-        category: 1,
+        category: "",
         cooperation_level: "",
         store_manager_user_id: "",
         province_id: "",
@@ -134,6 +141,7 @@ export default {
         { id: "3", name: "经纪人3" },
         { id: "4", name: "经纪人4" }
       ],
+      category_list: [],
       // 上传的内容
       // logo
       logoImageUrl: "",
@@ -157,6 +165,7 @@ export default {
   },
   mounted() {
     this.getCity();
+    this.getCompany();
   },
   methods: {
     getCity() {
@@ -182,6 +191,11 @@ export default {
       this.form.province_id = province_obj.id;
       this.form.city_id = city_obj.id;
       this.form.district_id = district_obj.id;
+    },
+    getCompany() {
+      this.$http.dictionaryFind("COMPANY_CATEGORY").then(res => {
+        this.category_list = res.data.data;
+      });
     },
     // 上传文件
     // 上传logo
@@ -221,34 +235,20 @@ export default {
       console.log(this.form.business_license_img);
     },
     onSubmit() {
-      this.$http
-        .createCompany({
-          category: this.form.category,
-          cooperation_level: this.form.cooperation_level,
-          store_manager_user_id: this.form.store_manager_user_id,
-          province_id: this.form.province_id,
-          city_id: this.form.city_id,
-          district_id: this.form.district_id,
-          address: this.form.address,
-          name: this.form.name,
-          logo: this.form.logo,
-          business_license_img: this.form.business_license_img,
-          company_img: this.form.company_img
-        })
-        .then(res => {
-          if (res.status === 201) {
-            this.$message({
-              message: "提交成功",
-              type: "success"
-            });
-            this.$router.push("/company_list");
-          } else {
-            this.$message({
-              message: "提交失败",
-              type: "error"
-            });
-          }
-        });
+      this.$http.createCompany(this.form).then(res => {
+        if (res.status === 201) {
+          this.$message({
+            message: "提交成功",
+            type: "success"
+          });
+          this.$router.push("/company_list");
+        } else {
+          this.$message({
+            message: "提交失败",
+            type: "error"
+          });
+        }
+      });
     },
     // 返回公司列表
     goBack() {

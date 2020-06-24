@@ -4,7 +4,7 @@
       <el-container>
         <el-header class="div row">
           <div class="div row">
-            <div class="title">楼盘列表</div>
+            <div class="title">项目列表</div>
             <div class="title_number">
               <div>
                 当前页面共(
@@ -13,19 +13,19 @@
               </div>
             </div>
             <div class="add-build">
-              <el-button type="primary" @click="addbuild">添加楼盘</el-button>
+              <el-button type="primary" @click="addData">添加项目</el-button>
             </div>
           </div>
           <div class="div row">
             <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link">
-                楼盘名称<i class="el-icon-arrow-down el-icon--right"></i>
+                项目名称<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">新盘名称</el-dropdown-item>
+                <el-dropdown-item command="a">项目名称</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-input v-model="input" placeholder="搜索相关楼盘名称"></el-input>
+            <el-input v-model="input" placeholder="搜索相关的项目"></el-input>
             <el-button type="primary" icon="el-icon-search" @click="search"
               >搜索</el-button
             >
@@ -39,103 +39,89 @@
             @selection-change="handleSelectionChange"
             ref="multipleTable"
           >
-            <el-table-column prop="id" label="id" width="120">
+            <el-table-column prop="build_id" label="楼盘id" width="80">
             </el-table-column>
-            <el-table-column prop="name" label="名称" width="120">
+            <el-table-column prop="company_id" label="所属公司id" width="100">
             </el-table-column>
-            <el-table-column
-              prop="build_selling_points"
-              label="标识"
-              width="120"
-            >
+            <el-table-column prop="id" label="项目id" width="100">
             </el-table-column>
-            <el-table-column prop="img" label="缩略图" width="120">
-              <template slot-scope="scope">
-                <div class=" div row scope-box">
-                  <img :src="scope.row.img" alt="" />
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="city_name" label="城市" width="104">
-            </el-table-column>
-            <el-table-column prop="build_address" label="区域" width="100">
+            <el-table-column prop="name" label="项目名称" width="140">
               <!-- <template slot-scope="scope">
-              <el-button
-                @click="handleClick(scope.row)"
-                type="text"
-                size="small"
-                >查看</el-button
-              >
-              <el-button type="text" size="small">编辑</el-button>
-            </template> -->
+                <div class=" div row scope-box">
+                  <img :src="scope.row.logo" alt="" />
+                </div>
+              </template> -->
             </el-table-column>
-            <el-table-column prop="plate" label="板块" width="120">
+            <el-table-column prop="brokerage_rule" label="分佣规则" width="220">
+              <!-- <template slot-scope="scope">
+                <div class=" div row scope-box">
+                  <img :src="scope.row.company_img" alt="" />
+                </div>
+              </template> -->
             </el-table-column>
             <el-table-column
-              prop="full_build_address"
-              label="详细地址"
-              width="188"
+              prop="online_customer_protected_day"
+              label="线上客户保护天数"
+              width="140"
             >
             </el-table-column>
             <el-table-column
-              prop="build_avg_price"
-              label="均价（元/平）"
+              prop="reported_protected_day"
+              label="报备保护天数"
               width="120"
             >
             </el-table-column>
             <el-table-column
-              prop="sales_office_phone"
-              label="售楼热线"
+              prop="clearing_brokerage_category"
+              label="结佣方式"
+              width="100"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="project_ownership"
+              label="项目归属"
+              width="100"
+            >
+            </el-table-column>
+            <el-table-column prop="display" label="是否显示" width="100">
+            </el-table-column>
+            <el-table-column
+              prop="cooperation_start"
+              label="合作开始时间"
               width="120"
             >
             </el-table-column>
             <el-table-column
-              prop="completion_house_time"
-              label="开盘时间"
+              prop="cooperation_end"
+              label="合作结束时间"
               width="120"
             >
-            </el-table-column>
-            <el-table-column prop="updated_at" label="添加时间" width="120">
             </el-table-column>
 
             <el-table-column
               prop="operating"
               label="操作"
-              width="150"
+              width="200"
               fixed="right"
             >
               <!-- 二级操作菜单 -->
               <template slot-scope="scope">
-                <div class="setup div row">
-                  <el-dropdown>
-                    <span
-                      class="el-dropdown-link el-button--lightblue dropbutton"
-                    >
-                      <i class="el-icon-s-tools"></i>设置
-                    </span>
-
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item @click.native="setupBuild(scope.row)"
-                        >编辑楼盘</el-dropdown-item
-                      >
-                      <el-dropdown-item @click.native="setupType(scope.row)"
-                        >编辑户型</el-dropdown-item
-                      >
-                      <el-dropdown-item @click.native="setupPhoto(scope.row)"
-                        >编辑画册</el-dropdown-item
-                      >
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="handleDelete(scope.$index, scope.row)"
-                    >删除</el-button
-                  >
-                </div>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  @click="handleDelete(scope.$index, scope.row)"
+                  >删除</el-button
+                >
+                <el-button
+                  size="mini"
+                  type="success"
+                  @click="updataCompany(scope.$index, scope.row)"
+                  >修改</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
+          <!-- 绑定公司 -->
         </el-main>
         <el-footer>
           <!-- 分页 -->
@@ -174,12 +160,11 @@ export default {
         total: 0,
         row: 0
       },
-      // 操作设置
-      setup_box: [
-        { name: "编辑楼盘", path: "setup_build", index: "1" },
-        { name: "编辑户型", path: "setup_type", index: "2" },
-        { name: "编辑画册", path: "setup_photo", index: "3" }
-      ]
+      formCompany: {
+        company_id: "",
+        project_id: ""
+      },
+      dialogCompany: false
     };
   },
   mounted() {
@@ -188,13 +173,22 @@ export default {
   methods: {
     // 获取列表数据
     getDataList() {
-      this.$http.getHousesList(this.params.currentPage).then(res => {
-        this.tableData = res.data.data;
-        this.imgbox = res.data.data.img;
-        this.params.currentPage = res.data.current_page;
-        this.params.total = res.data.total;
-        this.params.row = res.data.per_page;
+      this.$http.getProjectList(this.params.currentPage).then(res => {
+        if (res.status === 200) {
+          this.tableData = res.data.data;
+          this.params.currentPage = res.data.current_page;
+          this.params.total = res.data.total;
+          this.params.row = res.data.per_page;
+        } else {
+          this.$message({
+            message: "请求数据列表失败！",
+            type: "error"
+          });
+        }
       });
+    },
+    handleClick(row) {
+      console.log(row);
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -217,9 +211,9 @@ export default {
       this.getPageData();
       this.getDataList();
     },
-    // 搜索楼盘
+    // 搜索项目
     search() {
-      this.$http.searchList(this.input).then(res => {
+      this.$http.searchProject(this.input).then(res => {
         if (this.input !== "") {
           this.tableData = res.data.data;
         } else {
@@ -232,22 +226,13 @@ export default {
       this.$message("click on item " + command);
     },
     // 点击进入添加楼盘界面
-    addbuild() {
-      this.$router.push("/addbuild");
+    addData() {
+      this.$router.push("/upload_project");
     },
-    // 操作
-    setupBuild(row) {
-      this.$router.push(`/setup_build?id=${row.id}`);
-    },
-    setupType(row) {
-      this.$router.push(`/setup_type?id=${row.id}`);
-    },
-    setupPhoto(row) {
-      this.$router.push(`/setup_photo?id=${row.id}`);
-    },
+
     // 删除操作
     handleDelete(index, row) {
-      this.$http.deleteBuild(row.id).then(res => {
+      this.$http.deleteProject(row.id).then(res => {
         if (res.status === 200) {
           this.$message({
             message: "删除成功",
@@ -261,6 +246,10 @@ export default {
           });
         }
       });
+    },
+    // 修改操作
+    updataCompany(index, row) {
+      this.$router.push(`/updata_project?id=${row.id}`);
     }
   },
   computed: {}

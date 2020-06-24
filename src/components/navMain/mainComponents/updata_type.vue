@@ -3,7 +3,7 @@
     <el-form ref="form" :model="form">
       <div class="auto-width">
         <el-form-item label="户型分类">
-          <el-select v-model="form.region" placeholder="">
+          <el-select v-model="form.region" :placeholder="unit_name">
             <el-option
               v-for="(item, index) in type_classification_list"
               :key="index"
@@ -38,7 +38,7 @@
           <el-input type="number" v-model="form.area"></el-input>
         </el-form-item>
       </div>
-      <div class="auto-width">
+      <!-- <div class="auto-width">
         <el-form-item label="标识">
           <el-select v-model="form.mark_sale" placeholder="">
             <el-option
@@ -49,7 +49,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-      </div>
+      </div> -->
       <div class="auto-width">
         <el-form-item label="户型特色">
           <el-input v-model="form.features"></el-input>
@@ -102,6 +102,7 @@ export default {
   data() {
     return {
       form: {
+        category: "",
         type_logo: "",
         region: "",
         room: "",
@@ -123,6 +124,7 @@ export default {
         { label: "4室户型", value: "4" },
         { label: "5室户型以上", value: "5" }
       ],
+      unit_name: "",
       // 标识列表分类
       mark_sale_list: [
         {
@@ -174,7 +176,7 @@ export default {
         .updataType({
           id: this.id,
           build_id: this.build_id,
-          category: 4,
+          category: this.form.category,
           name: this.form.type_logo,
           total_room: this.form.room,
           total_salloon: this.form.hall,
@@ -201,6 +203,26 @@ export default {
     },
     getlist() {
       this.$http.getQueryTypeList(this.id).then(res => {
+        this.form.category = res.data.category;
+        switch (this.form.category) {
+          case 1:
+            this.unit_name = "1室户型";
+            break;
+          case 2:
+            this.unit_name = "2室户型";
+            break;
+          case 3:
+            this.unit_name = "3室户型";
+            break;
+          case 4:
+            this.unit_name = "4室户型";
+            break;
+          case 5:
+            this.unit_name = "5室户型以上";
+            break;
+          default:
+            break;
+        }
         this.form.type_logo = res.data.name;
         this.form.room = res.data.total_room;
         this.form.hall = res.data.total_salloon;
@@ -252,5 +274,8 @@ export default {
     width: 100%;
     height: 100%;
   }
+}
+.el-input {
+  width: 200px;
 }
 </style>

@@ -162,8 +162,8 @@ export default new Router({
       path: "/man_management",
       component: resolve =>
         require(["@/components/navMain/customer/man_management"], resolve),
-      meta: { title: "客户管理" },
-      name: "客户管理"
+      meta: { title: "用户管理" },
+      name: "用户管理"
     },
     {
       path: "/commission_end",
@@ -272,6 +272,27 @@ export default new Router({
         require(["@/components/navMain/company/upload_company"], resolve),
       meta: { title: "添加公司" },
       name: "添加公司"
+    },
+    {
+      path: "/project_list",
+      component: resolve =>
+        require(["@/components/navMain/company/project_list"], resolve),
+      meta: { title: "项目列表" },
+      name: "项目列表"
+    },
+    {
+      path: "/upload_project",
+      component: resolve =>
+        require(["@/components/navMain/company/upload_project"], resolve),
+      meta: { title: "添加项目" },
+      name: "添加项目"
+    },
+    {
+      path: "/updata_project",
+      component: resolve =>
+        require(["@/components/navMain/company/updata_project"], resolve),
+      meta: { title: "修改项目" },
+      name: "修改项目"
     }
   ]
 });

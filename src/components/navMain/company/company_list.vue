@@ -1,104 +1,106 @@
 <template>
   <div class="list">
     <el-container>
-      <el-container>
-        <el-header class="div row">
-          <div class="div row">
-            <div class="title">公司列表</div>
-            <div class="title_number">
-              <div>
-                当前页面共(
-                <i>{{ this.tableData.length }}</i>
-                )条数据
-              </div>
-            </div>
-            <div class="add-build">
-              <el-button type="primary" @click="addData">添加信息</el-button>
+      <el-header class="div row">
+        <div class="div row">
+          <div class="title">公司列表</div>
+          <div class="title_number">
+            <div>
+              当前页面共(
+              <i>{{ this.tableData.length }}</i>
+              )条数据
             </div>
           </div>
-          <div class="div row">
-            <el-dropdown @command="handleCommand">
-              <span class="el-dropdown-link">
-                公司名称<i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">公司名称</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-            <el-input v-model="input" placeholder="搜索相关公司"></el-input>
-            <el-button type="primary" icon="el-icon-search" @click="search"
-              >搜索</el-button
-            >
+          <div class="add-build">
+            <el-button type="primary" @click="addData">添加公司</el-button>
           </div>
-        </el-header>
-        <el-main>
-          <el-table
-            :data="tableData"
-            border
-            style="width: 100%"
-            @selection-change="handleSelectionChange"
-            ref="multipleTable"
+        </div>
+        <div class="div row">
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+              公司名称<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="a">公司名称</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <el-input v-model="input" placeholder="搜索相关公司"></el-input>
+          <el-button type="primary" icon="el-icon-search" @click="search"
+            >搜索</el-button
           >
-            <el-table-column prop="id" label="id" width="200">
-            </el-table-column>
-            <el-table-column prop="name" label="公司名称" width="200">
-            </el-table-column>
-            <el-table-column prop="logo" label="标识" width="200">
-              <template slot-scope="scope">
-                <div class=" div row scope-box">
-                  <img :src="scope.row.logo" alt="" />
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="company_img" label="公司主图" width="200">
-              <template slot-scope="scope">
-                <div class=" div row scope-box">
-                  <img :src="scope.row.company_img" alt="" />
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="city_name" label="城市" width="200">
-            </el-table-column>
-            <el-table-column prop="full_address" label="详细地址" width="238">
-            </el-table-column>
-            <el-table-column prop="updated_at" label="添加时间" width="200">
-            </el-table-column>
+        </div>
+      </el-header>
+      <el-main>
+        <el-table
+          :data="tableData"
+          border
+          style="width: 100%"
+          @selection-change="handleSelectionChange"
+          ref="multipleTable"
+        >
+          <el-table-column prop="id" label="id" width="200"> </el-table-column>
+          <el-table-column prop="name" label="公司名称" width="200">
+          </el-table-column>
+          <el-table-column prop="logo" label="标识" width="200">
+            <template slot-scope="scope">
+              <div class=" div row scope-box">
+                <img :src="scope.row.logo" alt="" />
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="company_img" label="公司主图" width="200">
+            <template slot-scope="scope">
+              <div class=" div row scope-box">
+                <img :src="scope.row.company_img" alt="" />
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="city_name" label="城市" width="200">
+          </el-table-column>
+          <el-table-column prop="full_address" label="详细地址" width="238">
+          </el-table-column>
+          <el-table-column prop="updated_at" label="添加时间" width="200">
+          </el-table-column>
 
-            <el-table-column prop="operating" label="操作" width="200">
-              <!-- 二级操作菜单 -->
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  type="danger"
-                  @click="handleDelete(scope.$index, scope.row)"
-                  >删除</el-button
-                >
-                <el-button
-                  size="mini"
-                  type="success"
-                  @click="updataCompany(scope.$index, scope.row)"
-                  >修改</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-main>
-        <el-footer>
-          <!-- 分页 -->
-          <div class="pagination-box">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="this.params.currentPage"
-              :page-sizes="[10, 20, 30, 40]"
-              :page-size="this.params.pagesize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="this.params.total"
-            >
-            </el-pagination>
-          </div>
-        </el-footer>
-      </el-container>
+          <el-table-column
+            prop="operating"
+            label="操作"
+            width="200"
+            fixed="right"
+          >
+            <!-- 二级操作菜单 -->
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)"
+                >删除</el-button
+              >
+              <el-button
+                size="mini"
+                type="success"
+                @click="updataCompany(scope.$index, scope.row)"
+                >修改</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-main>
+      <el-footer>
+        <!-- 分页 -->
+        <div class="pagination-box">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="this.params.currentPage"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="this.params.pagesize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="this.params.total"
+          >
+          </el-pagination>
+        </div>
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -142,9 +144,6 @@ export default {
         }
       });
     },
-    handleClick(row) {
-      console.log(row);
-    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
@@ -185,15 +184,7 @@ export default {
       this.$router.push("/upload_company");
     },
     // 操作
-    setupBuild(row) {
-      this.$router.push(`/setup_build?id=${row.id}`);
-    },
-    setupType(row) {
-      this.$router.push(`/setup_type?id=${row.id}`);
-    },
-    setupPhoto(row) {
-      this.$router.push(`/setup_photo?id=${row.id}`);
-    },
+
     // 删除操作
     handleDelete(index, row) {
       this.$http.deleteCompany(row.id).then(res => {

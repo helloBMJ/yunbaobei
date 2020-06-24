@@ -22,9 +22,9 @@
         <el-form-item label="项目名称" prop="project_name">
           <el-input v-model="formInline.project_name" placeholder=""></el-input>
         </el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
           <el-button type="primary">检查重名</el-button>
-        </el-form-item>
+        </el-form-item> -->
         <!-- 项目拼音 -->
         <!-- <el-form-item label="项目拼音" prop="project_pinyin">
           <el-input
@@ -563,7 +563,7 @@ export default {
             build: {
               province_id: this.formInline.province_id,
               city_id: this.formInline.city_id,
-              district_id: this.district_id,
+              district_id: this.formInline.district_id,
               //
               full_build_address: this.formInline.build_address,
               full_sales_office_address: this.formInline.sales_address,
@@ -578,7 +578,7 @@ export default {
               sales_office_phone: this.formInline.lou_tel,
               build_avg_price: this.formInline.lou_price,
               price_description: this.formInline.price_info,
-              newset_opening_time: this.formInline.open_time,
+              newest_opening_time: this.formInline.open_time,
               completion_house_time: this.formInline.complete_time,
               build_selling_points: this.formInline.selling_point,
               img: this.formInline.img

@@ -87,29 +87,29 @@ module.exports = [
   //   ]
   // },
   {
-    name: "客户",
+    name: "用户",
     id: "3",
     sub: [
       {
         name: "man_management",
         componentName: "man_management",
-        title: "客户管理"
-      },
-      {
-        name: "commission_end",
-        componentName: "commission_end",
-        title: "佣金结算"
-      },
-      {
-        name: "public_man",
-        componentName: "public_man",
-        title: "公共客户池"
-      },
-      {
-        name: "follow_record",
-        componentName: "follow_record",
-        title: "跟进记录"
+        title: "用户管理"
       }
+      // {
+      //   name: "commission_end",
+      //   componentName: "commission_end",
+      //   title: "佣金结算"
+      // },
+      // {
+      //   name: "public_man",
+      //   componentName: "public_man",
+      //   title: "公共客户池"
+      // },
+      // {
+      //   name: "follow_record",
+      //   componentName: "follow_record",
+      //   title: "跟进记录"
+      // }
     ]
   },
   {
@@ -136,12 +136,12 @@ module.exports = [
         name: "company_list",
         componentName: "company_list",
         title: "公司列表"
+      },
+      {
+        name: "project_list",
+        componentName: "project_list",
+        title: "项目列表"
       }
-      // {
-      //   name: "updata_company",
-      //   componentName: "updata_company",
-      //   title: "修改公司信息"
-      // }
     ]
   }
   // {

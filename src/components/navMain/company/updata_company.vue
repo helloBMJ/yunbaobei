@@ -6,16 +6,20 @@
     <el-main>
       <el-form label-width="100px" :model="form" style="width:500px">
         <el-form-item label="公司分类">
-          <el-input v-model="form.category"></el-input>
+          <el-select v-model="form.category" :placeholder="form.category_name">
+            <el-option
+              v-for="item in category_list"
+              :key="item.id"
+              :label="item.description"
+              :value="item.id"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="公司名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="门店经纪人">
-          <el-select
-            v-model="form.store_manager_user_id"
-            placeholder="请选择经纪人"
-          >
+          <el-select v-model="store_manager_user_id" placeholder="请选择经纪人">
             <el-option
               v-for="item in store_manager_list"
               :key="item.id"
@@ -25,7 +29,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="合作等级">
-          <el-select v-model="form.cooperation_level" placeholder="请选择等级">
+          <el-select v-model="cooperation_level" placeholder="请选择等级">
             <el-option
               v-for="item in cooperation_level_list"
               :key="item.id"
@@ -36,9 +40,9 @@
         </el-form-item>
         <el-form-item label="选择城市">
           <v-distpicker
-            province=""
-            city=""
-            area=""
+            :province="form.province_name"
+            :city="form.city_name"
+            :area="form.district_name"
             @selected="onSelected"
           ></v-distpicker>
         </el-form-item>
@@ -92,8 +96,8 @@
         </el-form-item>
         <div class="btn-box">
           <el-form-item size="large">
-            <el-button type="primary" @click="onSubmit">保存楼盘信息</el-button>
-            <el-button @click="goBack">返回楼盘列表</el-button>
+            <el-button type="primary" @click="onSubmit">保存公司信息</el-button>
+            <el-button @click="goBack">返回公司列表</el-button>
           </el-form-item>
         </div>
       </el-form>
@@ -108,7 +112,8 @@ export default {
   data() {
     return {
       form: {
-        category: 1,
+        category: "",
+        category_name: "",
         cooperation_level: "",
         store_manager_user_id: "",
         province_id: "",
@@ -120,6 +125,9 @@ export default {
         business_license_img: "",
         company_img: ""
       },
+      category_list: [],
+      cooperation_level: "",
+      store_manager_user_id: "",
       cooperation_level_list: [
         { id: "1", name: "砖石级", proportion: "80%" },
         { id: "2", name: "铂金级", proportion: "60%" },
@@ -131,6 +139,8 @@ export default {
         { id: "3", name: "经纪人3" },
         { id: "4", name: "经纪人4" }
       ],
+      new_cooperation_level_list: [],
+      new_store_manager_list: [],
       // 上传的内容
       // logo
       logoImageUrl: "",
@@ -157,6 +167,7 @@ export default {
     this.id = this.$route.query.id;
     this.getCity();
     this.getDataList();
+    this.getCompany();
   },
   methods: {
     getCity() {
@@ -164,21 +175,44 @@ export default {
         this.city_list = res.data;
       });
     },
+    getCompany() {
+      this.$http.dictionaryFind("COMPANY_CATEGORY").then(res => {
+        this.category_list = res.data.data;
+      });
+    },
     // 获取展示页面
     getDataList() {
       this.$http.queryCompany(this.id).then(res => {
         if (res.status === 200) {
-          this.form.category = res.data.category;
-          this.form.cooperation_level = res.data.cooperation_level;
-          this.form.store_manager_user_id = res.data.store_manager_user_id;
-          this.form.province_id = res.data.province_id;
-          this.form.city_id = res.data.city_id;
-          this.form.district_id = res.data.district_id;
-          this.form.address = res.data.address;
-          this.form.name = res.data.name;
-          this.form.logo = res.data.logo;
-          this.form.business_license_img = res.data.business_license_img;
-          this.form.company_img = res.data.company_img;
+          this.form = res.data;
+          switch (this.form.cooperation_level) {
+            case 1:
+              this.cooperation_level = "砖石级";
+              break;
+            case 2:
+              this.cooperation_level = "铂金级";
+              break;
+            case 3:
+              this.cooperation_level = "黄金级";
+            default:
+              break;
+          }
+          switch (this.form.store_manager_user_id) {
+            case 1:
+              this.store_manager_user_id = "经纪人1";
+              break;
+            case 2:
+              this.store_manager_user_id = "经纪人2";
+              break;
+            case 3:
+              this.store_manager_user_id = "经纪人3";
+              break;
+            case 4:
+              this.store_manager_user_id = "经纪人4";
+              break;
+            default:
+              break;
+          }
         } else {
           this.$message({
             message: "获取数据失败",

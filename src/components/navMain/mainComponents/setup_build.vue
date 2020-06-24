@@ -22,9 +22,9 @@
         <el-form-item label="项目名称" prop="project_name">
           <el-input v-model="formInline.project_name" placeholder=""></el-input>
         </el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
           <el-button type="primary">检查重名</el-button>
-        </el-form-item>
+        </el-form-item> -->
         <!-- 项目拼音 -->
         <!-- <el-form-item label="项目拼音" prop="project_pinyin">
           <el-input
@@ -36,9 +36,9 @@
         <div>
           <el-form-item label="城市区域" prop="area">
             <v-distpicker
-              province=""
-              city=""
-              area=""
+              :province="formInline.province_name"
+              :city="formInline.city_name"
+              :area="formInline.district_name"
               @selected="onSelected"
             ></v-distpicker>
           </el-form-item>
@@ -84,7 +84,10 @@
         <!-- 楼盘属性 -->
         <div class="lou-type">
           <div class="lou-type-s">楼盘属性</div>
-          <el-select v-model="formInline.attributes" placeholder="">
+          <el-select
+            v-model="formInline.attributes"
+            :placeholder="formInline.build_status_name"
+          >
             <el-option
               v-for="item in attributes"
               :key="item.id"
@@ -123,7 +126,10 @@
         </el-form-item>
         <!-- 上传楼盘缩略图 -->
         <div class="lou-type">
-          <div class="lou-type-s">楼盘缩略图</div>
+          <div class="lou-type-s">
+            <i style="font-style:normal;margin-bottom:40px">楼盘缩略图</i>
+          </div>
+          <img width="148px" height="148px" :src="formInline.img" alt="" />
           <el-upload
             :headers="myHeader"
             action="api/common/file/upload/admin?category=6"
@@ -179,7 +185,7 @@
             <el-checkbox
               v-for="item in decorationlist"
               :key="item.id"
-              :label="item.type"
+              :label="item.id"
               >{{ item.type }}</el-checkbox
             >
           </el-checkbox-group>
@@ -191,7 +197,7 @@
             <el-checkbox
               v-for="item in floorlist"
               :key="item.id"
-              :label="item.type"
+              :label="item.id"
               >{{ item.type }}</el-checkbox
             >
           </el-checkbox-group>
@@ -206,7 +212,7 @@
             <el-checkbox
               v-for="item in lou_feature_lsit"
               :key="item.id"
-              :label="item.type"
+              :label="item.id"
               >{{ item.type }}</el-checkbox
             >
           </el-checkbox-group>
@@ -384,8 +390,11 @@ export default {
       // 提交内容表单
       formInline: {
         // 楼盘信息
-
+        city_name: "",
+        district_name: "",
+        province_name: "",
         province_id: "",
+        build_status_name: "",
         city_id: "",
         district_id: "",
         project_name: "",
@@ -396,7 +405,7 @@ export default {
         map_lat: "",
         map_lng: "",
         lou_radio: [],
-        attributes: [],
+        attributes: "",
         lou_tel: "",
         sales_address: "",
         lou_price: "",
@@ -437,42 +446,42 @@ export default {
       },
       // 楼盘类型数组
       lou_list: [
-        { id: "1", type: "高层" },
-        { id: "2", type: "写字楼" },
-        { id: "3", type: "洋房" },
-        { id: "4", type: "别墅" },
-        { id: "5", type: "商业" }
+        { id: 1, type: "高层" },
+        { id: 2, type: "写字楼" },
+        { id: 3, type: "洋房" },
+        { id: 4, type: "别墅" },
+        { id: 5, type: "商业" }
       ],
       // 装修类型数组
       decorationlist: [
-        { id: "1", type: "毛坯" },
-        { id: "2", type: "简装" },
-        { id: "3", type: "精修" },
-        { id: "4", type: "豪华装修" }
+        { id: 1, type: "毛坯" },
+        { id: 2, type: "简装" },
+        { id: 3, type: "精修" },
+        { id: 4, type: "豪华装修" }
       ],
       // 楼层类型数组
       floorlist: [
-        { id: "1", type: "低层" },
-        { id: "2", type: "多层" },
-        { id: "3", type: "小高层" },
-        { id: "4", type: "高层" },
-        { id: "5", type: "超高层" }
+        { id: 1, type: "低层" },
+        { id: 2, type: "多层" },
+        { id: 3, type: "小高层" },
+        { id: 4, type: "高层" },
+        { id: 5, type: "超高层" }
       ],
       // 楼盘特色类型数组
       lou_feature_lsit: [
-        { id: "1", type: "别墅洋房" },
-        { id: "2", type: "经济住宅" }
+        { id: 1, type: "别墅洋房" },
+        { id: 2, type: "经济住宅" }
       ],
       // 区域选择列表数组
       arealist: [{ name: "枣庄", id: 1 }],
       // 板块选择列表数组
-      platelist: [{ name: "滕州", id: 1 }],
+      platelist: [{ name: "滕州", id: 2 }],
       // 楼盘属性列表数组
       attributes: [
-        { name: "到期房卡", id: "1" },
-        { name: "期房顺销", id: "2" },
-        { name: "现房销售", id: "3" },
-        { name: "即将清盘", id: "4" }
+        { name: "到期房卡", id: 1 },
+        { name: "期房顺销", id: 2 },
+        { name: "现房销售", id: 3 },
+        { name: "即将清盘", id: 4 }
       ],
       // 输入框规则
       rules: {
@@ -502,6 +511,7 @@ export default {
   mounted() {
     this.lou_id = this.$route.query.id;
     this.getQueryList();
+    this.getAttrList();
     this.getCity();
   },
   computed: {
@@ -513,6 +523,7 @@ export default {
     }
   },
   methods: {
+    // 获取楼盘展示信息
     getQueryList() {
       this.$http.getQueryBuildList(this.lou_id).then(res => {
         if (res.status === 200) {
@@ -522,9 +533,46 @@ export default {
           this.formInline.project_name = res.data.name;
           this.formInline.build_address = res.data.build_address;
           this.formInline.lou_tel = res.data.sales_office_phone;
+          this.formInline.attributes = res.data.build_status;
           this.formInline.lou_price = res.data.build_avg_price;
           this.formInline.price_info = res.data.price_description;
           this.formInline.sales_address = res.data.full_sales_office_address;
+          this.formInline.complete_time = res.data.completion_house_time;
+          this.formInline.open_time = res.data.newest_opening_time;
+          this.formInline.selling_point = res.data.build_selling_points;
+          this.formInline.city_name = res.data.city_name;
+          this.formInline.district_name = res.data.district_name;
+          this.formInline.province_name = res.data.province_name;
+          this.formInline.lou_radio = res.data.build_category.split(",");
+          this.formInline.lou_radio = this.formInline.lou_radio.map(Number);
+        }
+      });
+    },
+    // 获取物业展示信息
+    getAttrList() {
+      this.$http.getQueryAttrList(this.lou_id).then(res => {
+        if (res.status === 200) {
+          this.formInline.property_costs = res.data.real_estate_price;
+          this.formInline.property_company = res.data.real_estate_company;
+          this.formInline.area_interval = res.data.area_space;
+          this.formInline.buy_discount = res.data.buy_coupon;
+          this.formInline.developer = res.data.developers_company_name;
+          this.formInline.license = res.data.sales_license;
+          //
+          this.formInline.floor = res.data.floor_category.split(",");
+          this.formInline.floor = this.formInline.floor.map(Number);
+          this.formInline.lou_feature = res.data.build_feature.split(",");
+          this.formInline.lou_feature = this.formInline.lou_feature.map(Number);
+          this.formInline.decoration = res.data.decoration_category.split(",");
+          this.formInline.decoration = this.formInline.decoration.map(Number);
+          //
+          this.formInline.total_area = res.data.total_build_area;
+          this.formInline.footprint = res.data.land_occupancy_area;
+          this.formInline.total_houses = res.data.total_land_occupancy;
+          this.formInline.greening_rate = res.data.greening_rate;
+          this.formInline.volume_rate = res.data.plot_ratio;
+          this.formInline.car_space = res.data.plot_ratio;
+          this.formInline.houses_property = res.data.property_right_years;
         }
       });
     },
@@ -568,8 +616,6 @@ export default {
     // :http-request="uploadFile"
     // 提交
     onSubmit() {
-      console.log(this.formInline.district_id);
-
       if (
         !this.formInline.project_name ||
         !this.formInline.map_lat ||
@@ -601,12 +647,13 @@ export default {
               sales_office_phone: this.formInline.lou_tel,
               build_avg_price: this.formInline.lou_price,
               price_description: this.formInline.price_info,
-              newset_opening_time: this.formInline.open_time,
+              newest_opening_time: this.formInline.open_time,
               completion_house_time: this.formInline.complete_time,
               build_selling_points: this.formInline.selling_point,
               img: this.formInline.img
             },
             build_attr: {
+              build_id: this.lou_id,
               real_estate_price: this.formInline.property_costs,
               real_estate_company: this.formInline.property_company,
               area_space: this.formInline.area_interval,
@@ -642,6 +689,7 @@ export default {
           });
       }
     },
+
     // 返回楼盘列表
     goBack() {
       this.$router.push("/property_list");
