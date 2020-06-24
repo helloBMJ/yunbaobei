@@ -406,18 +406,17 @@ export default {
       });
     },
     onSubmit() {
-      console.log(this.form);
       this.$http.updataProject(this.form).then(res => {
-        if (res.status === 200) {
+        if (res.data.message !== "") {
           this.$message({
-            message: "提交成功",
-            type: "success"
+            message: res.data.message,
+            type: "error"
           });
           this.$router.push("/project_list");
         } else {
           this.$message({
-            message: "提交失败",
-            type: "error"
+            message: "提交成功",
+            type: "success"
           });
         }
       });
