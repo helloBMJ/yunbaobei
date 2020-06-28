@@ -39,11 +39,11 @@
             @selection-change="handleSelectionChange"
             ref="multipleTable"
           >
-            <el-table-column prop="build_id" label="楼盘id" width="80">
+            <el-table-column prop="build_name" label="楼盘名称" width="100">
             </el-table-column>
-            <el-table-column prop="company_id" label="所属公司id" width="100">
+            <el-table-column prop="company_name" label="所属公司" width="120">
             </el-table-column>
-            <el-table-column prop="id" label="项目id" width="100">
+            <el-table-column prop="display" label="是否显示" width="100">
             </el-table-column>
             <el-table-column prop="name" label="项目名称" width="140">
               <!-- <template slot-scope="scope">
@@ -72,18 +72,22 @@
             >
             </el-table-column>
             <el-table-column
-              prop="clearing_brokerage_category"
+              prop="clearing_brokerage_category_name"
               label="结佣方式"
               width="100"
             >
             </el-table-column>
             <el-table-column
-              prop="project_ownership"
+              prop="project_ownership_name"
               label="项目归属"
-              width="100"
+              width="80"
             >
             </el-table-column>
-            <el-table-column prop="display" label="是否显示" width="100">
+            <el-table-column
+              prop="cooperation_category_name"
+              label="合作方式"
+              width="80"
+            >
             </el-table-column>
             <el-table-column
               prop="cooperation_start"
@@ -232,20 +236,29 @@ export default {
 
     // 删除操作
     handleDelete(index, row) {
-      this.$http.deleteProject(row.id).then(res => {
-        if (res.status === 200) {
-          this.$message({
-            message: "删除成功",
-            type: "success"
+      // deleteProject
+      this.$confirm("此操作将删除该项目, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$http.deleteProject(row.id).then(res => {
+            if (res.status === 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.getDataList();
+            }
           });
-          this.getDataList();
-        } else {
+        })
+        .catch(() => {
           this.$message({
-            message: "删除失败",
-            type: "error"
+            type: "info",
+            message: "已取消删除"
           });
-        }
-      });
+        });
     },
     // 修改操作
     updataCompany(index, row) {

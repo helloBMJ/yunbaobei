@@ -240,8 +240,7 @@
         </el-form-item>
         <!-- 停车位 -->
         <el-form-item label="停车位">
-          <el-input v-model="formInline.car_space" placeholder=""></el-input
-          ><i style="color:rgb(153, 153, 153)">例：2.00</i>
+          <el-input v-model="formInline.car_space" placeholder=""></el-input>
         </el-form-item>
         <!-- 房屋产权 -->
         <el-form-item label="房屋产权">
@@ -253,18 +252,26 @@
         </el-form-item>
         <!-- 开盘时间 -->
         <el-form-item label="开盘时间">
-          <el-input v-model="formInline.open_time" placeholder=""></el-input>
+          <el-date-picker
+            v-model="formInline.open_time"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
           <p style="color:rgb(153, 153, 153)">
             主要以开盘时间说明为准，这里用于开盘日历及列表排序
           </p>
-          <p style="color:rgb(153, 153, 153)">注：时间格式：xxxx-xx-xx</p>
         </el-form-item>
         <!-- 竣工时间 -->
         <el-form-item label="竣工时间">
-          <el-input
+          <el-date-picker
             v-model="formInline.complete_time"
-            placeholder=""
-          ></el-input>
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
         </el-form-item>
         <div class="title">楼盘报备</div>
         <!-- 独立经纪人设置 -->
@@ -515,7 +522,6 @@ export default {
     },
     // 城市选择
     onSelected(data) {
-      console.log(data);
       this.formInline.province_id = data.province.code;
       this.formInline.city_id = data.city.code;
       this.formInline.district_id = data.area.code;

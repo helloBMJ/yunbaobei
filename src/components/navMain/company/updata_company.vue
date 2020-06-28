@@ -43,7 +43,9 @@
             :province="form.province_name"
             :city="form.city_name"
             :area="form.district_name"
-            @selected="onSelected"
+            @province="onChangeProvince"
+            @city="onChangeCity"
+            @area="onChangeArea"
           ></v-distpicker>
         </el-form-item>
         <el-form-item label="公司地址">
@@ -222,23 +224,32 @@ export default {
       });
     },
     // 城市选择
-    onSelected(data) {
-      console.log(data);
-      this.form.province_id = data.province.code;
-      this.form.city_id = data.city.code;
-      this.form.district_id = data.area.code;
-      var city_obj = this.city_list.find(item => {
-        return item.code === this.form.city_id;
-      });
-      var province_obj = this.city_list.find(item => {
-        return item.code === this.form.province_id;
-      });
-      var district_obj = this.city_list.find(item => {
-        return item.code === this.form.district_id;
-      });
-      this.form.province_id = province_obj.id;
-      this.form.city_id = city_obj.id;
-      this.form.district_id = district_obj.id;
+    onChangeProvince(a) {
+      setTimeout(() => {
+        this.formInline.province_id = a.code;
+        var province_obj = this.city_list.find(item => {
+          return item.code === this.formInline.province_id;
+        });
+        this.formInline.province_id = province_obj.id;
+      }, 5000);
+    },
+    onChangeCity(a) {
+      setTimeout(() => {
+        this.formInline.city_id = a.code;
+        var city_obj = this.city_list.find(item => {
+          return item.code === this.formInline.city_id;
+        });
+        this.formInline.city_id = city_obj.id;
+      }, 5000);
+    },
+    onChangeArea(a) {
+      setTimeout(() => {
+        this.formInline.district_id = a.code;
+        var district_obj = this.city_list.find(item => {
+          return item.code === this.formInline.district_id;
+        });
+        this.formInline.district_id = district_obj.id;
+      }, 5000);
     },
     // 上传文件
     // 上传logo

@@ -53,6 +53,7 @@
 <script>
 // import axios from "axios";
 // import validCode from "@/components/validCode";
+import { mapMutations } from "vuex";
 
 //先引入登录接口
 export default {
@@ -119,21 +120,34 @@ export default {
                 captcha: this.ruleForm2.captcha
               })
               .then(res => {
-                localStorage.setItem("TOKEN", res.data.token);
-                localStorage.setItem("user_name", this.ruleForm2.username);
-                this.$message({
-                  message: "登录成功！",
-                  type: "success"
-                });
-                this.isLogin = true;
-                this.$emit("click", this.isLogin);
-                this.$router.push("/index");
+                console.log(res);
+                if (res.status === 422) {
+                  this.$message({
+                    message:
+                      res.data.errors.captcha ||
+                      res.data.errors.password ||
+                      res.data.errors.user_name,
+                    type: "error"
+                  });
+                } else {
+                  //登陆成功后调用第2步store里面的login方法，并将username传递过去，并跳转到home主页面
+                  localStorage.setItem("TOKEN", res.data.token);
+                  localStorage.setItem("user_name", this.ruleForm2.username);
+                  this.$message({
+                    message: "登录成功！",
+                    type: "success"
+                  });
+                  this.$store.commit("login", res.data.token);
+                  this.$router.push("/web_overview");
+                }
               });
-            this.logining = false;
             // this.$router.push({ path: "/home" });
           }
         } else {
-          console.log("error submit!");
+          this.$message({
+            message: "请输入内容后提交",
+            type: "error"
+          });
           return false;
         }
       });

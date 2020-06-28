@@ -109,6 +109,7 @@
             placeholder="请输入公司名称"
             :remote-method="getcompanyData"
             :loading="company_loading"
+            @change="onCompany"
           >
             <el-option
               v-for="item in company_options"
@@ -124,10 +125,10 @@
             v-model="form.build_name"
             filterable
             remote
-            reserve-keyword
             placeholder="请输入楼盘名称"
             :remote-method="getbuildData"
             :loading="build_loading"
+            @change="onBuild"
           >
             <el-option
               v-for="item in build_options"
@@ -250,6 +251,8 @@ export default {
       company_loading: false,
       project_id: "",
       form: {
+        build_name: "",
+        company_name: "",
         build_id: "",
         company_id: "",
         name: "",
@@ -405,19 +408,20 @@ export default {
         }
       });
     },
+    onBuild(a) {
+      this.form.build_id = a;
+    },
+    onCompany(a) {
+      this.form.company_id = a;
+    },
     onSubmit() {
       this.$http.updataProject(this.form).then(res => {
-        if (res.data.message !== "") {
+        if (res.status === 200) {
           this.$message({
-            message: res.data.message,
-            type: "error"
-          });
-          this.$router.push("/project_list");
-        } else {
-          this.$message({
-            message: "提交成功",
+            message: "修改成功",
             type: "success"
           });
+          this.$router.push("/project_list");
         }
       });
     },

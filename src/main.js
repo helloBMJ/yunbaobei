@@ -8,34 +8,23 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
 import http from "@/utils/http";
+import city from "@/utils/city";
 // 请求数据
 Vue.prototype.$http = http;
-
+Vue.prototype.$city = city;
 Vue.use(ElementUI);
-
-// //使用钩子函数对路由进行权限跳转
-// router.beforeEach((to, from, next) => {
-//   const role = localStorage.getItem("TOKEN");
-//   // const role = store.state.userinfo;
-//   if (!role && to.path !== "/login") {
-//     // window.location.href = "/member/userlogin"
-//     next("/login");
-//   } else {
-//     // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
-//     if (navigator.userAgent.indexOf("MSIE") > -1 && to.path === "/editor") {
-//       Vue.prototype.$alert(
-//         "vue-quill-editor组件不兼容IE10及以下浏览器，请使用更高版本的浏览器查看",
-//         "浏览器不兼容通知",
-//         {
-//           confirmButtonText: "确定"
-//         }
-//       );
-//     } else {
-//       next();
-//     }
-//   }
-// });
-
+// 监视是否登录，没有登录返回到登录界面
+router.beforeEach((to, from, next) => {
+  //判断userinfo值是否为空，为空或者当前路径是/判断为未登录，返回到登录界面
+  const token = localStorage.getItem("TOKEN");
+  if (token || to.path === "/login") {
+    next();
+  } else {
+    next({
+      path: "/web_overview"
+    });
+  }
+});
 /* eslint-disable no-new */
 new Vue({
   el: "#app",

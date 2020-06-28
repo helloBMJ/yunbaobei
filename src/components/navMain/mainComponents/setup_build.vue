@@ -39,7 +39,9 @@
               :province="formInline.province_name"
               :city="formInline.city_name"
               :area="formInline.district_name"
-              @selected="onSelected"
+              @province="onChangeProvince"
+              @city="onChangeCity"
+              @area="onChangeArea"
             ></v-distpicker>
           </el-form-item>
         </div>
@@ -125,7 +127,7 @@
           ></el-input>
         </el-form-item>
         <!-- 上传楼盘缩略图 -->
-        <div class="lou-type">
+        <div class="lou-type div row">
           <div class="lou-type-s">
             <i style="font-style:normal;margin-bottom:40px">楼盘缩略图</i>
           </div>
@@ -246,8 +248,7 @@
         </el-form-item>
         <!-- 停车位 -->
         <el-form-item label="停车位">
-          <el-input v-model="formInline.car_space" placeholder=""></el-input
-          ><i style="color:rgb(153, 153, 153)">例：2.00</i>
+          <el-input v-model="formInline.car_space" placeholder=""></el-input>
         </el-form-item>
         <!-- 房屋产权 -->
         <el-form-item label="房屋产权">
@@ -259,116 +260,28 @@
         </el-form-item>
         <!-- 开盘时间 -->
         <el-form-item label="开盘时间">
-          <el-input v-model="formInline.open_time" placeholder=""></el-input>
+          <el-date-picker
+            v-model="formInline.open_time"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
           <p style="color:rgb(153, 153, 153)">
             主要以开盘时间说明为准，这里用于开盘日历及列表排序
           </p>
-          <p style="color:rgb(153, 153, 153)">注：时间格式：xxxx-xx-xx</p>
         </el-form-item>
         <!-- 竣工时间 -->
         <el-form-item label="竣工时间">
-          <el-input
+          <el-date-picker
             v-model="formInline.complete_time"
-            placeholder=""
-          ></el-input>
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
         </el-form-item>
         <div class="title">楼盘报备</div>
-        <!-- 独立经纪人设置 -->
-        <!-- <div class="tips-box div row" style="background:#f4f9ff">
-          <div class="tips-left">独立经纪人设置</div>
-          <div class="tips-right">
-            此处设置内容仅在独立经纪人或游客登录时展示
-          </div>
-        </div> -->
-        <!-- 楼盘佣金 -->
-        <!-- <el-form-item label="楼盘佣金">
-          <el-input
-            v-model="formInline.independent_floor_commission"
-            placeholder="不设置佣金填0即可"
-          ></el-input
-          >元起
-          <p style="color:rgb(153, 153, 153)">
-            仅用作前台展示，最终分佣以实际价格为准
-          </p>
-        </el-form-item> -->
-        <!-- 带看奖励 -->
-        <!-- <el-form-item label="带看奖励">
-          <el-input
-            v-model="formInline.independent_visit_reward"
-            placeholder=""
-          ></el-input>
-        </el-form-item> -->
-        <!-- 分佣规则 -->
-        <!-- <el-form-item label="分佣规则">
-          <el-input
-            :rows="3"
-            :cols="100"
-            type="textarea"
-            v-model="formInline.independent_commission_rules"
-          ></el-input>
-        </el-form-item> -->
-        <!-- 门店经纪人设置 -->
-        <!-- <div class="tips-box div row" style="background:#f9f2ff">
-          <div class="tips-left" style="color: #a125ff">门店经纪人设置</div>
-          <div class="tips-right">
-            此处设置内容仅在门店经纪人登录时设置,留空时,将于独立经纪人展示一样的内容
-          </div>
-        </div> -->
-        <!-- 楼盘佣金 -->
-        <!-- <el-form-item label="楼盘佣金">
-          <el-input
-            v-model="formInline.store_floor_commission"
-            placeholder="不设置佣金填0即可"
-          ></el-input
-          >元起
-          <p style="color:rgb(153, 153, 153)">
-            仅用作前台展示，最终分佣以实际价格为准
-          </p>
-        </el-form-item> -->
-        <!-- 带看奖励 -->
-        <!-- <el-form-item label="带看奖励">
-          <el-input
-            v-model="formInline.store_visit_reward"
-            placeholder=""
-          ></el-input>
-        </el-form-item> -->
-        <!-- 分佣规则 -->
-        <!-- <el-form-item label="分佣规则">
-          <el-input
-            :rows="3"
-            :cols="100"
-            type="textarea"
-            v-model="formInline.store_commission_rules"
-          ></el-input>
-        </el-form-item> -->
-        <!-- 默认分佣比例 -->
-        <!-- <el-form-item label="默认分佣比例">
-          <el-input
-            v-model="formInline.default_commission_rules"
-            placeholder=""
-          ></el-input>
-          <p style="color:rgb(153, 153, 153)">
-            后台提示用，成交价金额的此百分比部分作为默认分成用金额
-          </p>
-        </el-form-item> -->
-        <!-- 楼盘卖点 -->
-        <el-form-item label="楼盘卖点">
-          <el-input
-            :rows="3"
-            :cols="100"
-            type="textarea"
-            v-model="formInline.selling_point"
-          ></el-input>
-        </el-form-item>
-        <!-- 合作规则 -->
-        <!-- <el-form-item label="合作规则">
-          <el-input
-            :rows="3"
-            :cols="100"
-            type="textarea"
-            v-model="formInline.cooperation_rules"
-          ></el-input>
-        </el-form-item> -->
         <!-- 提交返回 -->
         <div class="btn-box">
           <el-form-item size="large">
@@ -502,7 +415,8 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       lou_id: null,
-      city_list: []
+      city_list: [],
+      o_city_list: []
     };
   },
   components: {
@@ -545,6 +459,9 @@ export default {
           this.formInline.province_name = res.data.province_name;
           this.formInline.lou_radio = res.data.build_category.split(",");
           this.formInline.lou_radio = this.formInline.lou_radio.map(Number);
+          this.formInline.province_id = res.data.province_id;
+          this.formInline.district_id = res.data.district_id;
+          this.formInline.city_id = res.data.city_id;
         }
       });
     },
@@ -582,23 +499,26 @@ export default {
         this.city_list = res.data;
       });
     },
-    // 城市选择
-    onSelected(data) {
-      console.log(data);
-      this.formInline.province_id = data.province.code;
-      this.formInline.city_id = data.city.code;
-      this.formInline.district_id = data.area.code;
-      var city_obj = this.city_list.find(item => {
-        return item.code === this.formInline.city_id;
-      });
+
+    onChangeProvince(a) {
+      this.formInline.province_id = a.code;
       var province_obj = this.city_list.find(item => {
         return item.code === this.formInline.province_id;
       });
+      this.formInline.province_id = province_obj.id;
+    },
+    onChangeCity(a) {
+      this.formInline.city_id = a.code;
+      var city_obj = this.city_list.find(item => {
+        return item.code === this.formInline.city_id;
+      });
+      this.formInline.city_id = city_obj.id;
+    },
+    onChangeArea(a) {
+      this.formInline.district_id = a.code;
       var district_obj = this.city_list.find(item => {
         return item.code === this.formInline.district_id;
       });
-      this.formInline.province_id = province_obj.id;
-      this.formInline.city_id = city_obj.id;
       this.formInline.district_id = district_obj.id;
     },
     // 上传文件
@@ -616,6 +536,7 @@ export default {
     // :http-request="uploadFile"
     // 提交
     onSubmit() {
+      console.log(this.formInline);
       if (
         !this.formInline.project_name ||
         !this.formInline.map_lat ||
@@ -673,18 +594,12 @@ export default {
             }
           })
           .then(res => {
-            console.log(res.status);
             if (res.status === 200) {
               this.$message({
                 message: "修改内容成功",
                 type: "success"
               });
               this.$router.push("/property_list");
-            } else {
-              this.$message({
-                message: "请输入正确内容",
-                type: "error"
-              });
             }
           });
       }
@@ -750,6 +665,9 @@ export default {
       margin-left: 20px;
       color: rgb(153, 153, 153);
     }
+  }
+  img {
+    margin: 0 10px;
   }
 }
 </style>

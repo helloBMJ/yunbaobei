@@ -167,28 +167,17 @@ class UserCenter {
     // 响应拦截
     this.$http.interceptors.response.use(
       response => {
-        // if (response.data.code == undefined) {
-        //   Message.error("服务器内部错误");
-        //   return;
-        // }
-        // 如果权限不足
-        // if (response.status == 403) {
-        //   router.push({
-        //     path: "/403",
-        //     querry: { redirect: router.currentRoute.fullPath } //从哪个页面跳转
-        //   });
+        // 提交失败
+        // if (response.data.code == -1) {
+        //   Message.error("登录已过期！");
+        //   localStorage.removeItem("TOKEN");
+        //   window.location.href = "/login";
+        // router.push({
+        //     path:"/login",
+        //     querry:{redirect:router.currentRoute.fullPath}//从哪个页面跳转
+        // })
         //   return response;
         // }
-        if (response.data.code == -1) {
-          Message.error("登录已过期！");
-          localStorage.removeItem("TOKEN");
-          window.location.href = "/login";
-          // router.push({
-          //     path:"/login",
-          //     querry:{redirect:router.currentRoute.fullPath}//从哪个页面跳转
-          // })
-          return response;
-        }
         // if (response.data.code == 2) {
         //   eventBus.$emit("bindPhone", response.data);
         //   return response;
@@ -206,6 +195,11 @@ class UserCenter {
         return response;
       },
       error => {
+        console.log(error.response.data);
+        if (error.response.status === 422) {
+          var err = error.response.data;
+          Message.error(err.message);
+        }
         return Promise.reject(error);
       }
     );
@@ -215,6 +209,14 @@ class UserCenter {
    */
   login(data = {}) {
     return this.$http.post("api/auth/admin/login/user_name", data);
+  }
+  // 获取登录后个人信息
+  getAdmin() {
+    return this.$http.get("api/admin/my/query");
+  }
+  // 修改管理员密码
+  updataAdmin(data) {
+    return this.$http.post("api/admin/my/update/password", data);
   }
   // 获取验证码
   getLoginCode() {

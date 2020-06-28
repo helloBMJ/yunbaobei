@@ -11,7 +11,9 @@ export default new Vuex.Store({
     userinfo: {
       username: "",
       password: ""
-    }
+    },
+    city_list: [],
+    userInfo: localStorage.getItem("TOKEN") || "" //获取localstorage存储的登录信息。或者是空值
   },
   mutations: {
     addTab(state, { componentName }) {
@@ -35,6 +37,10 @@ export default new Vuex.Store({
     removeUserInfo(state, payload) {
       state.token = "";
       state.userinfo = {};
+    },
+    login(state, v) {
+      localStorage.setItem("TOKEN", v); //将传递的数据先保存到localStorage中
+      state.userInfo = v;
     }
   }
 });

@@ -48,12 +48,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="company_img" label="公司主图" width="200">
-            <template slot-scope="scope">
-              <div class=" div row scope-box">
-                <img :src="scope.row.company_img" alt="" />
-              </div>
-            </template>
+          <el-table-column prop="category_name" label="公司分类" width="200">
           </el-table-column>
           <el-table-column prop="city_name" label="城市" width="200">
           </el-table-column>
@@ -187,20 +182,28 @@ export default {
 
     // 删除操作
     handleDelete(index, row) {
-      this.$http.deleteCompany(row.id).then(res => {
-        if (res.status === 200) {
-          this.$message({
-            message: "删除成功",
-            type: "success"
+      this.$confirm("此操作将删除该公司, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$http.deleteCompany(row.id).then(res => {
+            if (res.status === 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.getDataList();
+            }
           });
-          this.getDataList();
-        } else {
+        })
+        .catch(() => {
           this.$message({
-            message: "删除失败",
-            type: "error"
+            type: "info",
+            message: "已取消删除"
           });
-        }
-      });
+        });
     },
     // 修改操作
     updataCompany(index, row) {

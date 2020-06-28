@@ -90,20 +90,29 @@ export default {
     },
     //删除操作
     deleteData(row) {
-      this.$http.deleteHouse(row.id).then(res => {
-        if (res.status === 200) {
-          this.$message({
-            message: "删除成功",
-            type: "success"
+      // deleteHouse
+      this.$confirm("此操作将删除该户型, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$http.deleteHouse(row.id).then(res => {
+            if (res.status === 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.getDataList();
+            }
           });
-          this.getDataList();
-        } else {
+        })
+        .catch(() => {
           this.$message({
-            message: "删除失败",
-            type: "error"
+            type: "info",
+            message: "已取消删除"
           });
-        }
-      });
+        });
     }
   }
 };

@@ -56,9 +56,9 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="city_name" label="城市" width="104">
+            <el-table-column prop="province_name" label="省" width="104">
             </el-table-column>
-            <el-table-column prop="build_address" label="区域" width="100">
+            <el-table-column prop="city_name" label="市" width="100">
               <!-- <template slot-scope="scope">
               <el-button
                 @click="handleClick(scope.row)"
@@ -69,7 +69,7 @@
               <el-button type="text" size="small">编辑</el-button>
             </template> -->
             </el-table-column>
-            <el-table-column prop="plate" label="板块" width="120">
+            <el-table-column prop="district_name" label="区/县" width="120">
             </el-table-column>
             <el-table-column
               prop="full_build_address"
@@ -247,20 +247,28 @@ export default {
     },
     // 删除操作
     handleDelete(index, row) {
-      this.$http.deleteBuild(row.id).then(res => {
-        if (res.status === 200) {
-          this.$message({
-            message: "删除成功",
-            type: "success"
+      this.$confirm("此操作将删除该楼盘, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$http.deleteBuild(row.id).then(res => {
+            if (res.status === 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.getDataList();
+            }
           });
-          this.getDataList();
-        } else {
+        })
+        .catch(() => {
           this.$message({
-            message: "删除失败",
-            type: "error"
+            type: "info",
+            message: "已取消删除"
           });
-        }
-      });
+        });
     }
   },
   computed: {}
