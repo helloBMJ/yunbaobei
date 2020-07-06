@@ -53,8 +53,27 @@
           <el-input v-model="form.pinyin_name"></el-input>
           <p>请输入项目名称首字母</p>
         </el-form-item>
+        <el-form-item label="佣金分成">
+          <el-input
+            style="width:200px"
+            v-model="form.brokerage_rule"
+          ></el-input>
+          <i style="color:#f78989">注：元/套</i>
+        </el-form-item>
+        <el-form-item label="类型">
+          <el-input
+            maxlength="2"
+            style="width:200px"
+            v-model="form.label"
+          ></el-input>
+          <i style="color:#f78989">最大限制输入两字</i>
+          <i style="color:#999;">例：精选、优惠等字样</i>
+        </el-form-item>
         <el-form-item label="分佣规则">
-          <el-input type="textarea" v-model="form.brokerage_rule"></el-input>
+          <el-input
+            type="textarea"
+            v-model="form.brokerage_description"
+          ></el-input>
         </el-form-item>
         <el-form-item label="项目归属">
           <el-radio-group v-model="form.project_ownership">
@@ -163,6 +182,8 @@ export default {
         name: "",
         pinyin_name: "",
         brokerage_rule: "",
+        label: "",
+        brokerage_description: "",
         project_ownership: "",
         clearing_brokerage_category: "",
         auto_reported_valid: "",
@@ -202,7 +223,7 @@ export default {
   },
   methods: {
     getbuildData(query) {
-      this.$http.getHousesList().then(res => {
+      this.$http.getHousesList(1, query).then(res => {
         this.build_list = res.data.data.map(item => {
           return { name: item.name, build_id: item.id };
         });
@@ -220,7 +241,7 @@ export default {
       });
     },
     getcompanyData(query) {
-      this.$http.getCompanyList().then(res => {
+      this.$http.porjectCompanyList(query).then(res => {
         this.company_list = res.data.data.map(item => {
           return { name: item.name, company_id: item.id };
         });
@@ -239,7 +260,7 @@ export default {
     },
     onSubmit() {
       this.$http.createProject(this.form).then(res => {
-        if (res.status === 201) {
+        if (res.status === 200) {
           this.$message({
             message: "提交成功",
             type: "success"

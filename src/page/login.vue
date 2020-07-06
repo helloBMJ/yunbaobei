@@ -33,16 +33,22 @@
           auto-complete="off"
           placeholder="验证码"
         ></el-input>
-        <div></div>
       </el-form-item>
+      <div class="captcha-box">
+        <img
+          :src="
+            `https://fenxiao.zaodaoxiao.com/api/auth/admin/login/captcha?time=${captchaImg}`
+          "
+          alt=""
+        />
+        <el-button type="primary" size="mini" @click="changeCaptcha"
+          >点击更换验证码</el-button
+        >
+      </div>
       <!-- <valid-code :value.sync="validCode"></valid-code> -->
       <el-checkbox v-model="checked" class="rememberme">记住密码</el-checkbox>
       <el-form-item style="width:100%;">
-        <el-button
-          type="primary"
-          style="width:100%;"
-          @click="handleSubmit"
-          :loading="logining"
+        <el-button type="primary" style="width:100%;" @click="handleSubmit"
           >登录</el-button
         >
       </el-form-item>
@@ -81,22 +87,20 @@ export default {
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
         captcha: [{ required: true, message: "请输入验证码", trigger: "blur" }]
       },
+      // https://fenxiao.zaodaoxiao.com/api/auth/admin/login/captcha
+      imgUrl: "",
+      captchaImg: null,
       checked: false
     };
   },
   mounted() {
-    this.getCode();
+    this.changeCaptcha();
   },
   components: {
     // validCode
   },
   methods: {
-    // 获取验证码
-    getCode() {
-      this.$http.getLoginCode({}, res => {});
-    },
     handleSubmit(event) {
-      this.getCode();
       this.$refs.ruleForm2.validate(valid => {
         if (valid) {
           this.logining = true;
@@ -120,16 +124,7 @@ export default {
                 captcha: this.ruleForm2.captcha
               })
               .then(res => {
-                console.log(res);
-                if (res.status === 422) {
-                  this.$message({
-                    message:
-                      res.data.errors.captcha ||
-                      res.data.errors.password ||
-                      res.data.errors.user_name,
-                    type: "error"
-                  });
-                } else {
+                if (res.status === 200) {
                   //登陆成功后调用第2步store里面的login方法，并将username传递过去，并跳转到home主页面
                   localStorage.setItem("TOKEN", res.data.token);
                   localStorage.setItem("user_name", this.ruleForm2.username);
@@ -139,6 +134,8 @@ export default {
                   });
                   this.$store.commit("login", res.data.token);
                   this.$router.push("/web_overview");
+                } else {
+                  this.changeCaptcha();
                 }
               });
             // this.$router.push({ path: "/home" });
@@ -151,6 +148,12 @@ export default {
           return false;
         }
       });
+    },
+    changeCaptcha() {
+      this.captchaImg = parseInt(Math.random() * (10000 + 1), 10);
+      console.log(
+        `https://fenxiao.zaodaoxiao.com/api/auth/admin/login/captcha?time=${this.captchaImg}`
+      );
     }
   }
 };

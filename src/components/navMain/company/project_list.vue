@@ -43,7 +43,12 @@
             </el-table-column>
             <el-table-column prop="company_name" label="所属公司" width="120">
             </el-table-column>
-            <el-table-column prop="display" label="是否显示" width="100">
+            <el-table-column
+              :formatter="formatDisplay"
+              prop="display"
+              label="是否显示"
+              width="100"
+            >
             </el-table-column>
             <el-table-column prop="name" label="项目名称" width="140">
               <!-- <template slot-scope="scope">
@@ -105,7 +110,7 @@
             <el-table-column
               prop="operating"
               label="操作"
-              width="200"
+              width="250"
               fixed="right"
             >
               <!-- 二级操作菜单 -->
@@ -121,6 +126,18 @@
                   type="success"
                   @click="updataCompany(scope.$index, scope.row)"
                   >修改</el-button
+                >
+                <el-button
+                  size="mini"
+                  type="success"
+                  @click="setupDynamic(scope.$index, scope.row)"
+                  >管理动态</el-button
+                >
+                <el-button
+                  size="mini"
+                  type="success"
+                  @click="shareClient(scope.$index, scope.row)"
+                  >推广</el-button
                 >
               </template>
             </el-table-column>
@@ -168,7 +185,8 @@ export default {
         company_id: "",
         project_id: ""
       },
-      dialogCompany: false
+      dialogCompany: false,
+      dialogView: false
     };
   },
   mounted() {
@@ -190,6 +208,15 @@ export default {
           });
         }
       });
+    },
+    formatDisplay(row) {
+      let display = row.display;
+      if (display === 1) {
+        return (display = "显示");
+      }
+      if (display === 0) {
+        return (display = "不显示");
+      }
     },
     handleClick(row) {
       console.log(row);
@@ -263,6 +290,12 @@ export default {
     // 修改操作
     updataCompany(index, row) {
       this.$router.push(`/updata_project?id=${row.id}`);
+    },
+    setupDynamic(index, row) {
+      this.$router.push(`/dynamic_list?id=${row.id}`);
+    },
+    shareClient(index, row) {
+      this.$router.push(`/share_content?id=${row.id}`);
     }
   },
   computed: {}
@@ -277,6 +310,7 @@ export default {
 .el-button {
   border: none;
   border-radius: 0;
+  margin: 5px;
 }
 .el-input {
   border-left: none;

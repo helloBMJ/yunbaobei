@@ -154,8 +154,13 @@ export default {
       this.levelList = matched;
     },
     loginOut() {
-      this.$store.commit("login", ""); //更新userInfo
-      localStorage.removeItem("TOKEN");
+      // this.$store.commit("login", ""); //更新userInfo
+      // localStorage.removeItem("TOKEN");
+      // localStorage.removeItem("user_name");
+      // this.$router.push("/login");
+
+      // 注销后 清除session信息 ，并返回登录页
+      window.localStorage.removeItem("TOKEN");
       localStorage.removeItem("user_name");
       this.$router.push("/login");
     },

@@ -7,47 +7,47 @@ module.exports = [
         name: "web_overview",
         componentName: "web_overview",
         title: "网站概况"
-      },
-      {
-        name: "site_setup",
-        componentName: "site_setup",
-        title: "站点设置"
-      },
-      {
-        name: "mes_setup",
-        componentName: "mes_setup",
-        title: "消息设置"
-      },
-      {
-        name: "password_setup",
-        componentName: "password_setup",
-        title: "密码设置"
-      },
-      {
-        name: "city_setup",
-        componentName: "city_setup",
-        title: "城市管理"
-      },
-      {
-        name: "global_parameters",
-        componentName: "global_parameters",
-        title: "全局参数"
-      },
-      {
-        name: "advertising",
-        componentName: "advertising",
-        title: "广告管理"
-      },
-      {
-        name: "cache_clearing",
-        componentName: "cache_clearing",
-        title: "缓存清理"
-      },
-      {
-        name: "operation_log",
-        componentName: "operation_log",
-        title: "操作日志"
       }
+      // {
+      //   name: "site_setup",
+      //   componentName: "site_setup",
+      //   title: "站点设置"
+      // },
+      // {
+      //   name: "mes_setup",
+      //   componentName: "mes_setup",
+      //   title: "消息设置"
+      // },
+      // {
+      //   name: "password_setup",
+      //   componentName: "password_setup",
+      //   title: "密码设置"
+      // },
+      // {
+      //   name: "city_setup",
+      //   componentName: "city_setup",
+      //   title: "城市管理"
+      // },
+      // {
+      //   name: "global_parameters",
+      //   componentName: "global_parameters",
+      //   title: "全局参数"
+      // },
+      // {
+      //   name: "advertising",
+      //   componentName: "advertising",
+      //   title: "广告管理"
+      // },
+      // {
+      //   name: "cache_clearing",
+      //   componentName: "cache_clearing",
+      //   title: "缓存清理"
+      // },
+      // {
+      //   name: "operation_log",
+      //   componentName: "operation_log",
+      //   title: "操作日志"
+      // }
     ]
   },
   // {
@@ -141,6 +141,17 @@ module.exports = [
         name: "project_list",
         componentName: "project_list",
         title: "项目列表"
+      }
+    ]
+  },
+  {
+    name: "资讯",
+    id: "6",
+    sub: [
+      {
+        name: "news_management",
+        componentName: "news_management",
+        title: "资讯管理"
       }
     ]
   }

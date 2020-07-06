@@ -192,7 +192,7 @@ export default {
               message: "提交成功",
               type: "success"
             });
-            this.$router.push("/setup_type");
+            this.$router.push(`property_list`);
           } else {
             this.$message({
               message: "提交失败",

@@ -102,8 +102,8 @@
         </el-form-item>
         <div class="btn-box">
           <el-form-item size="large">
-            <el-button type="primary" @click="onSubmit">保存楼盘信息</el-button>
-            <el-button @click="goBack">返回楼盘列表</el-button>
+            <el-button type="primary" @click="onSubmit">保存公司信息</el-button>
+            <el-button @click="goBack">返回公司列表</el-button>
           </el-form-item>
         </div>
       </el-form>
@@ -236,7 +236,7 @@ export default {
     },
     onSubmit() {
       this.$http.createCompany(this.form).then(res => {
-        if (res.status === 201) {
+        if (res.status === 200) {
           this.$message({
             message: "提交成功",
             type: "success"

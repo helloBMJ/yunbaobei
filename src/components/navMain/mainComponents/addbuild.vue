@@ -20,7 +20,11 @@
       >
         <!-- 项目名称 -->
         <el-form-item label="项目名称" prop="project_name">
-          <el-input v-model="formInline.project_name" placeholder=""></el-input>
+          <el-input
+            maxlength="8"
+            v-model="formInline.project_name"
+            placeholder=""
+          ></el-input>
         </el-form-item>
         <!-- <el-form-item>
           <el-button type="primary">检查重名</el-button>
@@ -610,17 +614,12 @@ export default {
             // 省市区
           })
           .then(res => {
-            if (res.status === 201) {
+            if (res.status === 200) {
               this.$message({
                 message: "提交成功",
                 type: "success"
               });
               this.$router.push("/property_list");
-            } else if (res.status === 200) {
-              this.$message({
-                message: res.data.message,
-                type: "warning"
-              });
             } else {
               this.$message({
                 message: "请输入内容后提交",

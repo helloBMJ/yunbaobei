@@ -19,7 +19,7 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "/",
+      redirect: "/index",
       meta: { needLogin: true }
     },
     {
@@ -68,6 +68,15 @@ export default new Router({
             require(["@/components/navMain/mainComponents/addbuild"], resolve),
           meta: { title: "发布楼盘" },
           name: "发布楼盘"
+        },
+        {
+          path: "/dynamic_list",
+          component: resolve =>
+            require([
+              "@/components/navMain/mainComponents/dynamic_list"
+            ], resolve),
+          meta: { title: "动态列表" },
+          name: "动态列表"
         },
         {
           path: "/setup_build",
@@ -313,6 +322,58 @@ export default new Router({
             require(["@/components/navMain/company/updata_project"], resolve),
           meta: { title: "修改项目" },
           name: "修改项目"
+        },
+        {
+          path: "/share_content",
+          component: resolve =>
+            require(["@/components/navMain/company/share_content"], resolve),
+          meta: { title: "设置推广" },
+          name: "设置推广"
+        },
+        {
+          path: "/news_management",
+          component: resolve =>
+            require(["@/components/navMain/news/news_management"], resolve),
+          meta: { title: "资讯管理" },
+          name: "资讯管理",
+          redirect: "/management_page",
+          children: [
+            {
+              path: "/class_list",
+              component: resolve =>
+                require(["@/components/navMain/news/class_list"], resolve),
+              meta: { title: "分类列表" },
+              name: "分类列表"
+            },
+            {
+              path: "/management_page",
+              component: resolve =>
+                require(["@/components/navMain/news/management_page"], resolve),
+              meta: { title: "管理列表" },
+              name: "管理列表"
+            },
+            {
+              path: "/add_news",
+              component: resolve =>
+                require(["@/components/navMain/news/add_news"], resolve),
+              meta: { title: "增加资讯" },
+              name: "增加资讯"
+            },
+            {
+              path: "/add_list",
+              component: resolve =>
+                require(["@/components/navMain/news/add_list"], resolve),
+              meta: { title: "增加分类" },
+              name: "增加分类"
+            }
+          ]
+        },
+        {
+          path: "/updataInfo",
+          component: resolve =>
+            require(["@/components/navMain/news/updataInfo"], resolve),
+          meta: { title: "修改资讯" },
+          name: "修改资讯"
         }
       ]
     },

@@ -218,12 +218,19 @@ class UserCenter {
   updataAdmin(data) {
     return this.$http.post("api/admin/my/update/password", data);
   }
-  // 获取验证码
-  getLoginCode() {
-    return this.$http.get("api/auth/admin/login/captcha");
+  // 退出登录
+  loginOut() {
+    return this.$http.get("api/auth/admin/logout");
   }
+  // 获取验证码
+  // getLoginCode(time) {
+  //   return this.$http.get(`api/auth/admin/login/captcha?time=${time}`);
+  // }
   // 获取楼盘列表数据
-  getHousesList(page) {
+  getHousesList(page, name) {
+    return this.$http.get(`api/admin/build/search?page=${page}&name=${name}`);
+  }
+  getAllHouses(page) {
     return this.$http.get(`api/admin/build/search?page=${page}`);
   }
   // 楼盘列表搜索
@@ -291,7 +298,17 @@ class UserCenter {
     return this.$http.post("api/admin/build/img/create", data);
   }
   // 公司列表获取
-  getCompanyList(page) {
+  getCompanyList(data) {
+    return this.$http.get(
+      `api/admin/company/search?name=${data.name}&category=${data.category}`,
+      data
+    );
+  }
+  // 展示公司列表
+  porjectCompanyList(name) {
+    return this.$http.get(`api/admin/company/search?name=${name}`);
+  }
+  showCompanyList(page) {
     return this.$http.get(`api/admin/company/search?page=${page}`);
   }
   // 添加公司
@@ -377,6 +394,86 @@ class UserCenter {
   // 字典查找类型
   dictionaryFind(type) {
     return this.$http.get(`api/common/dictionary/search?name=${type}`);
+  }
+  // 项目动态查询
+  projectNews(id, page, name) {
+    return this.$http.get(
+      `api/admin/project/news/search?project_id=${id}&page=${page}&title=${name}`
+    );
+  }
+  // 删除项目动态
+  deleteNews(id) {
+    return this.$http.get(`api/admin/project/news/delete/${id}`);
+  }
+  // 添加项目动态
+  uploadNews(data) {
+    return this.$http.post("api/admin/project/news/create", data);
+  }
+  // 展示动态内容
+  queryNews(id) {
+    return this.$http.get(`api/admin/project/news/query/${id}`);
+  }
+  // 修改动态
+  updataNews(data) {
+    return this.$http.post(`api/admin/project/news/update`, data);
+  }
+  // 添加推广内容
+  uploadShare(data) {
+    return this.$http.post("api/admin/project/share/content/create", data);
+  }
+  // 查询推广内容列表
+  allShare(id, page) {
+    return this.$http.get(
+      `api/admin/project/share/content/all/${id}?page=${page}`
+    );
+  }
+  // 删除推广内容
+  deleteShare(id) {
+    return this.$http.get(`api/admin/project/share/content/delete/${id}`);
+  }
+  // 展示推广内容
+  queryShare(id) {
+    return this.$http.get(`api/admin/project/share/content/query/${id}`);
+  }
+  // 修改推广展示内容
+  updataShare(data) {
+    return this.$http.post("api/admin/project/share/content/update", data);
+  }
+  // 获取分类列表
+  uploadCategory() {
+    return this.$http.get("api/admin/news/category/search");
+  }
+  // 修改分类列表
+  deleteCategory(id) {
+    return this.$http.get(`api/admin/news/category/delete/${id}`);
+  }
+  // 修改分类内容
+  updataCategory(data) {
+    return this.$http.post("api/admin/news/category/update", data);
+  }
+  // 增加分类内容
+  createCategory(data) {
+    return this.$http.post("api/admin/news/category/create", data);
+  }
+  // 增加资讯
+  uploadInfo(data) {
+    return this.$http.post("api/admin/news/create", data);
+  }
+  // 获取资讯列表
+  searchInfo(page) {
+    return this.$http.get(`api/admin/news/search?page=${page}`);
+  }
+  // 删除资讯列表
+  deleteInfo(id) {
+    return this.$http.get(`api/admin/news/delete/${id}`);
+  }
+  // 修改资讯列表
+  updataInfo(data) {
+    return this.$http.post("api/admin/news/update", data);
+  }
+  // 获取展示修改页面的内容
+  queryInfo(id) {
+    return this.$http.get(`api/admin/news/query/${id}`);
   }
   // 获取城市列表
   getCity() {

@@ -9,20 +9,23 @@ import "element-ui/lib/theme-chalk/index.css";
 
 import http from "@/utils/http";
 import city from "@/utils/city";
+import "../static/ueditor/ueditor.config.js";
+import "../static/ueditor/ueditor.all.min.js";
+import "../static/ueditor/lang/zh-cn/zh-cn.js";
+import "../static/ueditor/ueditor.parse.min.js";
+import { WindowsBalloon } from "node-notifier";
+
 // 请求数据
 Vue.prototype.$http = http;
 Vue.prototype.$city = city;
 Vue.use(ElementUI);
 // 监视是否登录，没有登录返回到登录界面
 router.beforeEach((to, from, next) => {
-  //判断userinfo值是否为空，为空或者当前路径是/判断为未登录，返回到登录界面
-  const token = localStorage.getItem("TOKEN");
-  if (token || to.path === "/login") {
-    next();
+  let token = window.localStorage.TOKEN;
+  if (!token && to.path !== "/login") {
+    window.location.href = "/login";
   } else {
-    next({
-      path: "/web_overview"
-    });
+    next();
   }
 });
 /* eslint-disable no-new */

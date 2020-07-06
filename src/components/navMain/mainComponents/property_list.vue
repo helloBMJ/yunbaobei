@@ -188,7 +188,7 @@ export default {
   methods: {
     // 获取列表数据
     getDataList() {
-      this.$http.getHousesList(this.params.currentPage).then(res => {
+      this.$http.getAllHouses(this.params.currentPage).then(res => {
         this.tableData = res.data.data;
         this.imgbox = res.data.data.img;
         this.params.currentPage = res.data.current_page;
@@ -245,6 +245,7 @@ export default {
     setupPhoto(row) {
       this.$router.push(`/setup_photo?id=${row.id}`);
     },
+
     // 删除操作
     handleDelete(index, row) {
       this.$confirm("此操作将删除该楼盘, 是否继续?", "提示", {

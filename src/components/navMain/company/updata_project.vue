@@ -7,16 +7,16 @@
       </div>
       <div class="btn-box" style="margin:10px">
         <el-button type="primary" @click="dialogCompany = true"
-          >绑定项目公司</el-button
+          >选择项目公司</el-button
         >
         <el-button type="primary" @click="dialogBroker = true"
-          >绑定项目经纪人</el-button
+          >选择项目经纪人</el-button
         >
         <el-button type="primary" @click="dialogManager = true"
-          >绑定项目经理</el-button
+          >选择项目经理</el-button
         >
       </div>
-      <el-dialog title="绑定公司" :visible.sync="dialogCompany">
+      <el-dialog title="选择公司" :visible.sync="dialogCompany">
         <el-form :model="formCompany">
           <el-form-item label="选择公司" label-width="100px">
             <el-select
@@ -43,7 +43,7 @@
           <el-button type="primary" @click="bindingCompany">确 定</el-button>
         </div>
       </el-dialog>
-      <el-dialog title="绑定经纪人" :visible.sync="dialogBroker">
+      <el-dialog title="选择经纪人" :visible.sync="dialogBroker">
         <el-form :model="fromBroker">
           <el-form-item label="用户名" label-width="100px">
             <el-select
@@ -70,7 +70,7 @@
           <el-button type="primary" @click="bindingBroker">确 定</el-button>
         </div>
       </el-dialog>
-      <el-dialog title="绑定经理" :visible.sync="dialogManager">
+      <el-dialog title="选择经理" :visible.sync="dialogManager">
         <el-form :model="fromManager">
           <el-form-item label="用户名" label-width="100px">
             <el-select
@@ -146,8 +146,24 @@
           <el-input v-model="form.pinyin_name"></el-input>
           <p>请输入项目名称首字母</p>
         </el-form-item>
+        <el-form-item label="佣金分成">
+          <el-input style="width:200px" v-model="form.brokerage_rule"></el-input
+          ><i style="color:#f78989">注：元/套</i>
+        </el-form-item>
+        <el-form-item label="类型">
+          <el-input
+            maxlength="2"
+            style="width:200px"
+            v-model="form.label"
+          ></el-input>
+          <i style="color:#f78989">最大限制输入两字</i>
+          <i style="color:#999;">例：精选、优惠等字样</i>
+        </el-form-item>
         <el-form-item label="分佣规则">
-          <el-input type="textarea" v-model="form.brokerage_rule"></el-input>
+          <el-input
+            type="textarea"
+            v-model="form.brokerage_description"
+          ></el-input>
         </el-form-item>
         <el-form-item label="项目归属">
           <el-radio-group v-model="form.project_ownership">
@@ -258,6 +274,8 @@ export default {
         name: "",
         pinyin_name: "",
         brokerage_rule: "",
+        label: "",
+        brokerage_description: "",
         project_ownership: "",
         clearing_brokerage_category: "",
         auto_reported_valid: "",
@@ -373,7 +391,7 @@ export default {
       });
     },
     getcompanyData(query) {
-      this.$http.getCompanyList().then(res => {
+      this.$http.getCompanyList({ name, category: 2 }).then(res => {
         this.company_list = res.data.data.map(item => {
           return { name: item.name, company_id: item.id };
         });

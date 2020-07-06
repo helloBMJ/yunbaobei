@@ -44,7 +44,7 @@
           <el-table-column prop="logo" label="标识" width="200">
             <template slot-scope="scope">
               <div class=" div row scope-box">
-                <img :src="scope.row.logo" alt="" />
+                <el-image fit="contain" :src="scope.row.logo" alt="" />
               </div>
             </template>
           </el-table-column>
@@ -125,7 +125,7 @@ export default {
   methods: {
     // 获取列表数据
     getDataList() {
-      this.$http.getCompanyList(this.params.currentPage).then(res => {
+      this.$http.showCompanyList(this.params.currentPage).then(res => {
         if (res.status === 200) {
           this.tableData = res.data.data;
           this.params.currentPage = res.data.current_page;
@@ -258,7 +258,8 @@ export default {
 }
 .scope-box {
   height: 40px;
-  img {
+  .el-image {
+    height: 40px;
     width: 100%;
   }
 }

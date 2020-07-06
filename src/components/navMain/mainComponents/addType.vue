@@ -176,7 +176,7 @@ export default {
         })
         .then(res => {
           console.log(this.form);
-          if (res.status === 201) {
+          if (res.status === 200) {
             this.$message({
               message: "提交成功",
               type: "success"
